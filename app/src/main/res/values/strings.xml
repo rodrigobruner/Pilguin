@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Pillguin</string>
+
+    <!-- fragment_add_medicine -->
+    <string name="txt_add_medication">Add Medication</string>
+    <string name="txt_medication_name">Medication name</string>
+    <string name="txt_medication_type">Medication type</string>
+    <string name="txt_medication_dosage">Medication dosage</string>
+    <string name="txt_frequency_type">Frequency type</string>
+    <string name="btn_add_medication">Add medication</string>
+    <string name="msg_success_saved">Medication saved!</string>
+    <string name="msg_error_name_required">Please enter a medication name.</string>
+    <string name="msg_error_dosage_required">Please enter a medication dosage.</string>
+    <string name="msg_error_schedule">Please complete the schedule.</string>
+
+    <!-- do not change the order here! Check MedicineTypeIconMapper first -->
+    <string-array name="list_medication_types">
+        <item>Pill/Capsule</item>
+        <item>Liquid</item>
+        <item>Injection</item>
+        <item>Tablet</item>
+        <item>Eyedropper</item>
+        <item>Inhaler</item>
+        <item>Topical</item> <!-- -->
+        <item>Patch</item>
+        <item>Spray</item>
+        <item>Powder</item>
+        <item>Lozenge</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- do not change the order here! Check AddMedicineFragment.setUpFrequencyType() -->
+    <string-array name="list_frequency_types">
+        <item>Every X hours</item>
+        <item>Custom</item>
+<!--        <item>Some days of the week</item>-->
+<!--        <item>Every X days</item>-->
+<!--        <item>Once</item>-->
+    </string-array>
+
+    <!-- card_every_x_hour -->
+    <string name="txt_hour_frequency">Every %d hours</string>
+    <string name="txt_start_date">Start date</string>
+    <string name="txt_hour">Hour</string>
+    <string name="txt_end_date">End date</string>
+    <string name="txt_no_end_date">No end date</string>
+    <string name="msg_error_start_date_required">Start date is required</string>
+    <string name="msg_error_end_date_required">End date is required</string>
+    <string name="msg_error_time_required">Please select a time</string>
+
+    <!--- card_custom -->
+    <string name="txt_custom_frequency">Custom frequency</string>
+    <string-array name="list_frequency_months">
+        <item>Every month</item>
+        <item>Every 2 months</item>
+        <item>Every 3 months</item>
+        <item>Every 4 months</item>
+        <item>Every 5 months</item>
+        <item>Every 6 months</item>
+        <item>Every 7 months</item>
+        <item>Every 8 months</item>
+        <item>Every 9 months</item>
+        <item>Every 10 months</item>
+        <item>Every 11 months</item>
+        <item>Every 12 months</item>
+    </string-array>
+
+    <string-array name="list_frequency_week">
+        <item>Every week</item>
+        <item>Every 2 weeks</item>
+        <item>Every 3 weeks</item>
+    </string-array>
+
+    <string name="txt_week_monday">Monday</string>
+    <string name="txt_week_tuesday">Tuesday</string>
+    <string name="txt_week_wednesday">Wednesday</string>
+    <string name="txt_week_thursday">Thursday</string>
+    <string name="txt_week_friday">Friday</string>
+    <string name="txt_week_saturday">Saturday</string>
+    <string name="txt_week_sunday">Sunday</string>
+
+    <string name="msg_error_weekdays_required">At least one weekday must be selected.</string>
+
+
+    <!-- fragment_medicine -->
+    <string name="txt_medicine_list">Medicine List</string>
+    <string name="txt_took_it">I took it</string>
+    <string name="txt_report_side_effects">Report side effects</string>
+
+    <!-- fragment_report -->
+
+
+    <!-- -->
+    <string name="date_picker_invalid_format">"Invalid date format. Expected format: YYYY-MM-DD"</string>
+
+</resources>

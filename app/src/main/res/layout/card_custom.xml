@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_weekdays"
+        style="@style/CardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textView9"
+                style="@style/LabelStyle"
+                android:text="@string/txt_custom_frequency" />
+
+            <Spinner
+                android:id="@+id/spn_month"
+                style="@style/SpinnerStyle" />
+
+            <Spinner
+                android:id="@+id/spn_week"
+                style="@style/SpinnerStyle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/lnl_weekdays">
+
+                <TextView
+                    android:id="@+id/txt_weekdays_error"
+                    android:textColor="@color/red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/msg_error_weekdays_required" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_sunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_sunday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_moday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_monday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_tuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_tuesday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_wednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_wednesday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_thursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_thursday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_friday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_friday" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swh_week_saturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/txt_week_saturday" />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/txt_start_date"
+                style="@style/EditTextStyle"
+                android:hint="@string/txt_start_date"
+                android:inputType="date" />
+
+            <EditText
+                android:id="@+id/edt_time"
+                style="@style/EditTextStyle"
+                android:hint="@string/txt_hour"
+                android:inputType="time" />
+
+            <EditText
+                android:id="@+id/txt_end_date"
+                style="@style/EditTextStyle"
+                android:hint="@string/txt_end_date"
+                android:inputType="date" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swh_no_end_date"
+                style="@style/SwitchStyle"
+                android:layout_gravity="right"
+                android:text="@string/txt_no_end_date" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
