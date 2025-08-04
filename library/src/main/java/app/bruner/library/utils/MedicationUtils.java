@@ -20,7 +20,7 @@ public class MedicationUtils {
     private static Gson gson = new Gson();
 
     // save the medication
-    public static void saveMedicationList(Context context, List<Medication> medicationList) {
+    public static void save(Context context, List<Medication> medicationList) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         String json = gson.toJson(medicationList);
@@ -29,7 +29,7 @@ public class MedicationUtils {
     }
 
     // get the medication list
-    public static ArrayList<Medication> getMedicationList(Context context) {
+    public static ArrayList<Medication> getAll(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         String json = prefs.getString(KEY_MEDICATION_LIST, null);
         if (json == null) {
@@ -39,15 +39,22 @@ public class MedicationUtils {
         return gson.fromJson(json, type);
     }
 
-    // add a medication by ID
-    public static void deleteMedication(Context context, long medicationId) {
-        List<Medication> list = getMedicationList(context);
+    // delete a medication by ID
+    public static void delete(Context context, long medicationId) {
+        List<Medication> list = getAll(context);
         List<Medication> updatedList = new ArrayList<>();
         for (Medication med : list) {
             if (med.getId() != medicationId) {
                 updatedList.add(med);
             }
         }
-        saveMedicationList(context, updatedList);
+        save(context, updatedList);
+    }
+
+    // add a medication
+    public static void add(Context context, Medication medication) {
+        List<Medication> list = getAll(context);
+        list.add(medication);
+        save(context, list);
     }
 }

@@ -1,7 +1,6 @@
 package app.bruner.pillguin.ui.medication;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ public class MedicationFragment extends Fragment {
     private void setRecyclerView() {
 
         // get the medication list
-        ArrayList<Medication> medicationList = MedicationUtils.getMedicationList(getContext());
+        ArrayList<Medication> medicationList = MedicationUtils.getAll(getContext());
         // set layout to recycler view
         binding.recyclerViewMedicine.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -61,7 +60,7 @@ public class MedicationFragment extends Fragment {
             // swipe to delete
             @Override
             public void onSwipeToDelete(Medication medication) {
-                MedicationUtils.deleteMedication(getContext(), medication.getId());
+                MedicationUtils.delete(getContext(), medication.getId());
                 Toast.makeText(getContext(), "Deleted " + medication.getName(), Toast.LENGTH_SHORT).show();
                 setRecyclerView();
             }

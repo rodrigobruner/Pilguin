@@ -136,9 +136,7 @@ public class AddMedicationFragment extends Fragment {
         Medication medication = new Medication(id, name, dosage, type, schedule);
 
         // sava medication
-        java.util.List<Medication> list = MedicationUtils.getMedicationList(requireContext());
-        list.add(medication);
-        MedicationUtils.saveMedicationList(requireContext(), list);
+        MedicationUtils.add(getContext(), medication);
 
         // show success message
         Toast.makeText(requireContext(), getString(R.string.msg_success_saved), Toast.LENGTH_SHORT).show();
