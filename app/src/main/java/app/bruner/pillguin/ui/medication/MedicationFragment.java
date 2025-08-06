@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
 import app.bruner.library.models.Medication;
+import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.adapters.MedicationAdapter;
 import app.bruner.pillguin.databinding.FragmentMedicationBinding;
 

@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pillguin"
         tools:targetApi="31">
+        <service android:name="app.bruner.library.services.MedicationSyncService"
+            android:exported="false" />
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false" />

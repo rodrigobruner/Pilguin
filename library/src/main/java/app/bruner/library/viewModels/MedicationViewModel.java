@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.library.viewModels;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.ArrayList;
 import app.bruner.library.models.Medication;
-import app.bruner.library.repository.MedicationRepository;
+import app.bruner.library.repositories.MedicationRepository;
 
 public class MedicationViewModel extends AndroidViewModel {
 

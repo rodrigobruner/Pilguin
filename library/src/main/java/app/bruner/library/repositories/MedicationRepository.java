@@ -1,4 +1,4 @@
-package app.bruner.library.repository;
+package app.bruner.library.repositories;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

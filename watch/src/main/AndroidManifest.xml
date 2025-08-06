@@ -12,6 +12,9 @@
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
+        <service android:name="app.bruner.library.services.MedicationSyncService"
+            android:exported="false" />
+        <activity android:name="androidx.wear.activity.ConfirmationActivity" />
         <activity
             android:name=".ui.ReportSideEffectActivity"
             android:exported="false"
@@ -34,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="androidx.wear.activity.ConfirmationActivity" />
+
     </application>
 
 </manifest>
