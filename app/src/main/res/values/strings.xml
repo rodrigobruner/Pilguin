@@ -14,20 +14,7 @@
     <string name="msg_error_schedule">Please complete the schedule.</string>
 
     <!-- do not change the order here! Check MedicineTypeIconMapper first -->
-    <string-array name="list_medication_types">
-        <item>Pill/Capsule</item>
-        <item>Liquid</item>
-        <item>Injection</item>
-        <item>Tablet</item>
-        <item>Eyedropper</item>
-        <item>Inhaler</item>
-        <item>Topical</item> <!-- -->
-        <item>Patch</item>
-        <item>Spray</item>
-        <item>Powder</item>
-        <item>Lozenge</item>
-        <item>Other</item>
-    </string-array>
+
 
     <!-- do not change the order here! Check AddMedicineFragment.setUpFrequencyType() -->
     <string-array name="list_frequency_types">

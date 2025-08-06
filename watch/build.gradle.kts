@@ -45,4 +45,6 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.wear)
     implementation(project(":library"))
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }

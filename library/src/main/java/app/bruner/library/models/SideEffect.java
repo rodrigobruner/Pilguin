@@ -1,8 +1,9 @@
 package app.bruner.library.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SideEffect {
+public class SideEffect implements Serializable {
     private long id;
     private long medicationId;
     private String description;

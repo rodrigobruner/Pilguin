@@ -1,11 +1,13 @@
 package app.bruner.library.utils;
 
+import android.content.Context;
+
 import app.bruner.library.R;
 
 public class MedicineTypeIconMapper {
 
     // base on id return a icon resource id
-    public static int getIconForPosition(int position) {
+    public static int getIconByPosition(int position) {
         switch (position) {
             case 0: return R.drawable.ic_pill;
             case 1: return R.drawable.ic_type_liquid;
@@ -20,5 +22,15 @@ public class MedicineTypeIconMapper {
             case 10: return R.drawable.ic_type_lozenge;
             default: return R.drawable.ic_type_other;
         }
+    }
+
+    public static int getIconByType(Context context, String type) {
+        String[] medicationTypesArray = context.getResources().getStringArray(R.array.list_medication_types);
+        for (int i = 0; i < medicationTypesArray.length; i++) {
+            if (medicationTypesArray[i].equalsIgnoreCase(type)) {
+                return getIconByPosition(i);
+            }
+        }
+        return getIconByPosition(-1);
     }
 }

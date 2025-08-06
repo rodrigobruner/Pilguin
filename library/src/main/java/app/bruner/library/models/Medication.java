@@ -1,8 +1,9 @@
 package app.bruner.library.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Medication {
+public class Medication implements Serializable {
     private long id;
     private String name;
     private String dosage;

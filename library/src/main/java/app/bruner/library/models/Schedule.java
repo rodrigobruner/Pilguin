@@ -1,9 +1,10 @@
 package app.bruner.library.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Schedule {
+public class Schedule implements Serializable {
 
     public final static String FREQUENCY_DAILY = "daily";
     public final static String FREQUENCY_WEEKLY = "weekly";

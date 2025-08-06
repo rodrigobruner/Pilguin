@@ -39,11 +39,10 @@ public class AddMedicationFragment extends Fragment {
 
 
     private void setUi() {
-
         // medication type
         ArrayAdapter<CharSequence> medicationAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
-                R.array.list_medication_types,
+                app.bruner.library.R.array.list_medication_types,
                 android.R.layout.simple_spinner_item
         );
         medicationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

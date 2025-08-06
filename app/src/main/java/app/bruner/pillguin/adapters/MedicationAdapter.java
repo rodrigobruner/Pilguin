@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.MedicineTypeIconMapper;
-import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.CardMedicationBinding;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
@@ -66,7 +65,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             binding.txtDozage.setText(medication.getDosage());
 
             // get array of strings
-            String[] medicationTypesArray = binding.getRoot().getContext().getResources().getStringArray(R.array.list_medication_types);
+            String[] medicationTypesArray = binding.getRoot().getContext().getResources().getStringArray(app.bruner.library.R.array.list_medication_types);
             ArrayList<String> medicationTypesList = new ArrayList<>(Arrays.asList(medicationTypesArray));
 
             // find the position
@@ -74,7 +73,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             if (typePosition == -1) typePosition = 99; // defaul 99 to go to other
 
             // set icon
-            int iconResource = MedicineTypeIconMapper.getIconForPosition(typePosition);
+            int iconResource = MedicineTypeIconMapper.getIconByPosition(typePosition);
             binding.txtMedicinaName.setCompoundDrawablesWithIntrinsicBounds(iconResource, 0, 0, 0);
 
             // set click listeners

@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="txt_app_title">PillGuim</string>
 
+    <string-array name="list_medication_types">
+        <item>Pill/Capsule</item>
+        <item>Liquid</item>
+        <item>Injection</item>
+        <item>Tablet</item>
+        <item>Eyedropper</item>
+        <item>Inhaler</item>
+        <item>Topical</item> <!-- -->
+        <item>Patch</item>
+        <item>Spray</item>
+        <item>Powder</item>
+        <item>Lozenge</item>
+        <item>Other</item>
+    </string-array>
 </resources>
