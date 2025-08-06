@@ -16,6 +16,7 @@ import app.bruner.library.models.Schedule;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.CardEveryXHourBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
+import app.bruner.pillguin.utils.Constants;
 import app.bruner.pillguin.utils.DatePickerUtil;
 import app.bruner.pillguin.utils.TimePickerUtils;
 
@@ -42,7 +43,7 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
         binding.sekFrequency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress == 0) progress = 1;
+                if (progress == 0) progress = Constants.SEEK_BAR_DEFAULT_FREQUENCY;
                 updateDisplay(progress);
             }
 
@@ -54,7 +55,7 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
         });
 
         // Configuração inicial
-        updateDisplay(1);
+        updateDisplay(Constants.SEEK_BAR_DEFAULT_FREQUENCY);
     }
 
     private void updateDisplay(int hours) {

@@ -5,13 +5,11 @@ import java.util.Date;
 
 public class SideEffect implements Serializable {
     private long id;
-    private long medicationId;
     private String description;
     private Date datetimeReported;
 
-    public SideEffect(long id, long medicationId, String description, String severity, Date datetimeReported) {
+    public SideEffect(long id, String description, String severity, Date datetimeReported) {
         this.id = id; //System.currentTimeMillis();
-        this.medicationId = medicationId;
         this.description = description;
         this.datetimeReported = datetimeReported;
     }
@@ -22,14 +20,6 @@ public class SideEffect implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getMedicationId() {
-        return medicationId;
-    }
-
-    public void setMedicationId(long medicationId) {
-        this.medicationId = medicationId;
     }
 
     public String getDescription() {

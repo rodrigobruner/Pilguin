@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:min="1"
                     android:max="24"
-                    android:progress="1" />
+                    android:progress="8" />
             </LinearLayout>
 
             <EditText
