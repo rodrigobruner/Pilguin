@@ -14,21 +14,20 @@ import app.bruner.pillguin.databinding.CardMedicationBinding;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
-    private final List<Medication> medications;
+    private final List<Medication> medications = new ArrayList<>();
 
     // public for swipe access
     public final OnMedicineActionListener listener;
 
     // define interface for listeners
     public interface OnMedicineActionListener {
-        void onTookMedicine(Medication medication);
+        void onTookMedication(Medication medication);
         void onReportSideEffects(Medication medication);
         void onClick(Medication medication);
         void onSwipeToDelete(Medication medication);
     }
 
-    public MedicationAdapter(List<Medication> medications, OnMedicineActionListener listener) {
-        this.medications = medications;
+    public MedicationAdapter(OnMedicineActionListener listener) {
         this.listener = listener;
     }
 
@@ -49,6 +48,16 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
     @Override
     public int getItemCount() {
         return medications.size();
+    }
+
+    public List<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<Medication> newMedications) {
+        medications.clear();
+        medications.addAll(newMedications);
+        notifyDataSetChanged();
     }
 
     class MedicationViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +87,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
             // set click listeners
             binding.btnTookMedicine.setOnClickListener(v -> {
-                if (listener != null) listener.onTookMedicine(medication);
+                if (listener != null) listener.onTookMedication(medication);
             });
             binding.btnReportSideEffects.setOnClickListener(v -> {
                 if (listener != null) listener.onReportSideEffects(medication);

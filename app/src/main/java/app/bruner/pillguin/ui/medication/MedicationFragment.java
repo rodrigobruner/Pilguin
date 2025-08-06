@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import app.bruner.library.models.Medication;
-import app.bruner.library.utils.MedicationUtils;
 import app.bruner.pillguin.adapters.MedicationAdapter;
 import app.bruner.pillguin.databinding.FragmentMedicationBinding;
 
 public class MedicationFragment extends Fragment {
     FragmentMedicationBinding binding;
+    MedicationViewModel viewModel;
+    MedicationAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -27,31 +29,31 @@ public class MedicationFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = FragmentMedicationBinding.inflate(inflater, container, false);
+        viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(MedicationViewModel.class);
         init();
         return binding.getRoot();
     }
 
     private void init() {
         setRecyclerView();
+        observeMedications();
     }
 
     private void setRecyclerView() {
-
-        // get the medication list
-        ArrayList<Medication> medicationList = MedicationUtils.getAll(getContext());
-        // set layout to recycler view
+        // set layout manager
         binding.recyclerViewMedicine.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // create the adapter
-        MedicationAdapter adapter = new MedicationAdapter(medicationList, new MedicationAdapter.OnMedicineActionListener() {
+        // new adapter with listeners
+        adapter = new MedicationAdapter(new MedicationAdapter.OnMedicineActionListener() {
 
-            // took medicine button
+            // buttons to inform that took medication
             @Override
-            public void onTookMedicine(Medication medication) {
+            public void onTookMedication(Medication medication) {
                 Toast.makeText(getContext(), "Took " + medication.getName(), Toast.LENGTH_SHORT).show();
             }
 
-            // report side effects button
+            // button to report side effects
             @Override
             public void onReportSideEffects(Medication medication) {
                 Toast.makeText(getContext(), "Report sideEffects " + medication.getName(), Toast.LENGTH_SHORT).show();
@@ -60,22 +62,21 @@ public class MedicationFragment extends Fragment {
             // swipe to delete
             @Override
             public void onSwipeToDelete(Medication medication) {
-                MedicationUtils.delete(getContext(), medication.getId());
+                viewModel.deleteMedication(medication.getId());
                 Toast.makeText(getContext(), "Deleted " + medication.getName(), Toast.LENGTH_SHORT).show();
-                setRecyclerView();
             }
 
-            // click on medication card
+            // click to show medication details
             @Override
             public void onClick(Medication medication) {
                 Toast.makeText(getContext(), "Clicked on " + medication.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        // add the adapter
+        // add adapter
         binding.recyclerViewMedicine.setAdapter(adapter);
 
-        // set up swipe to delete
+        // set up swipe to delete callback
         ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -85,11 +86,17 @@ public class MedicationFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Medication medication = medicationList.get(position);
+                Medication medication = adapter.getMedications().get(position);
                 adapter.listener.onSwipeToDelete(medication);
             }
         };
-
         new ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.recyclerViewMedicine);
+    }
+
+    // Observe medications changes on ViewModel
+    private void observeMedications() {
+        viewModel.getMedications().observe(getViewLifecycleOwner(), medications -> {
+            adapter.setMedications(medications);
+        });
     }
 }
