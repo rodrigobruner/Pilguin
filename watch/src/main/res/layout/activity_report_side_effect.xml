@@ -13,22 +13,49 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:padding="5dp"
             app:layout_boxedEdges="all"
             tools:context=".ui.MainActivity">
 
-            <TextView
-                android:id="@+id/txt_dosage"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:gravity="left"
-                android:textSize="12sp"
+                android:layout_marginEnd="5dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/TitleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <EditText
+                    android:id="@+id/txt_side_effect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:text="Name" />
+
+                <ImageButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/light_green"
+                    app:tint="@color/white"
+                    android:src="@drawable/ic_pill"
+                    android:scaleType="centerInside" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.wear.widget.BoxInsetLayout>
 </FrameLayout>

@@ -1,11 +1,15 @@
 package app.bruner.watch.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Date;
+
 import app.bruner.library.models.Medication;
+import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.library.utils.MedicineTypeIconMapper;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMedicationBinding;
@@ -32,6 +36,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         getMedication();
         setupViews();
         binding.btnTookThisMedication.setOnClickListener(this);
+        binding.btnReportSideEffects.setOnClickListener(this);
     }
 
     private void getMedication(){
@@ -51,7 +56,9 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.txtDosage.setText(medication.getDosage());
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
             if (medication.getSchedule() != null) {
-                binding.txtTime.setText(medication.getSchedule().getNextTime().toString());
+                Date nextTime = medication.getSchedule().getNextTime();
+                String nextTimeString = DateTimeParseUtils.formatDateTime(getBaseContext(), nextTime);
+                binding.txtTime.setText(nextTimeString);
             } else {
                 binding.txtTime.setText("");
             }
@@ -63,6 +70,12 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         if(v.getId() == binding.btnTookThisMedication.getId()) {
             // TODO: save took medication
             ConfirmUtils.showSavedMessage(getString(R.string.txt_you_took_it), this);
+        }
+
+        if(v.getId() == binding.btnReportSideEffects.getId()) {
+            Intent intent = new Intent(getBaseContext(), ReportSideEffectActivity.class);
+            intent.putExtra(MedicationActivity.MEDICATION_PARAM, medication);
+            startActivity(intent);
         }
     }
 }

@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void init(){
         binding.btnDailyMedication.setOnClickListener(this);
         binding.btnNextMedication.setOnClickListener(this);
-        binding.btnReportSideEffect.setOnClickListener(this);
 //        initShardPreferences();
     }
 
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, MedicationListActivity.class));
         } else if (v.getId() == R.id.btn_next_medication) {
             startActivity(new Intent(this, MedicationActivity.class));
-        } else if (v.getId() == R.id.btn_report_side_effect) {
-            startActivity(new Intent(this, ReportSideEffectActivity.class));
         }
     }
 

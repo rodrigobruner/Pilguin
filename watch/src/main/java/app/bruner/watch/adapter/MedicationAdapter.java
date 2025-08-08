@@ -1,6 +1,8 @@
 package app.bruner.watch.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -67,10 +69,10 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
 
             itemView.setOnClickListener(v -> {
-                android.content.Intent intent = new android.content.Intent(context, app.bruner.watch.ui.MedicationActivity.class);
+                Intent intent = new Intent(context, MedicationActivity.class);
                 intent.putExtra(MedicationActivity.MEDICATION_PARAM, medication);
-                if (!(context instanceof android.app.Activity)) {
-                    intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (!(context instanceof Activity)) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 context.startActivity(intent);
             });

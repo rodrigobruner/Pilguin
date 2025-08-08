@@ -39,8 +39,6 @@ public class MedicationListActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         binding.rcvMedications.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
-
-        // Passe a lista para o adapter
         adapter = new MedicationAdapter(this);
         binding.rcvMedications.setAdapter(adapter);
         binding.rcvMedications.setEdgeItemsCenteringEnabled(true);
