@@ -10,7 +10,6 @@ public class Medication implements Serializable {
     private String dosage;
     private String type;
     private Schedule schedule;
-    private ArrayList<String> whenTook;
     private ArrayList<SideEffect> sideEffects;
 
     public Medication(long id, String name, String dosage, String type, Schedule schedule) {
@@ -19,7 +18,6 @@ public class Medication implements Serializable {
         this.dosage = dosage;
         this.type = type;
         this.schedule = schedule;
-        this.whenTook = new ArrayList<>();
         this.sideEffects = new ArrayList<>();
     }
 
@@ -61,14 +59,6 @@ public class Medication implements Serializable {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
-    }
-
-    public ArrayList<String> getWhenTook() {
-        return whenTook;
-    }
-
-    public void setWhenTook(ArrayList<String> whenTook) {
-        this.whenTook = whenTook;
     }
 
     public ArrayList<SideEffect> getSideEffects() {

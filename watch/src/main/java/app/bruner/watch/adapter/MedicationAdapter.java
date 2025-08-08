@@ -55,7 +55,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void bindView(final Medication medication, final int position) {
             recyclerRowBinding.txtMedicationName.setText(medication.getName());
             if (medication.getSchedule() != null && medication.getSchedule().getTimes() != null && !medication.getSchedule().getTimes().isEmpty()) {
-                recyclerRowBinding.txtTime.setText(medication.getSchedule().getTimes().get(0));
+                recyclerRowBinding.txtTime.setText(medication.getSchedule().getTimes());
             } else {
                 recyclerRowBinding.txtTime.setText("");
             }

@@ -17,8 +17,7 @@ import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.CardEveryXHourBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
 import app.bruner.pillguin.utils.Constants;
-import app.bruner.pillguin.utils.DatePickerUtil;
-import app.bruner.pillguin.utils.TimePickerUtils;
+import app.bruner.pillguin.utils.DateTimePickerUtils;
 
 public class EveryXHoursCard extends Fragment implements ScheduleProvider {
 
@@ -65,17 +64,9 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
 
     private void setUi(){
 
-        binding.edtTime.setOnFocusChangeListener(
-                (v, hasFocus) -> {
-                    if (hasFocus) {
-                        TimePickerUtils.showTimePicker(requireContext(), binding.edtTime);
-                    }
-                }
-        );
-
         //set up date pickers
-        DatePickerUtil.showDatePicker(getContext(), binding.txtStartDate);
-        DatePickerUtil.showDatePicker(getContext(), binding.txtEndDate);
+        DateTimePickerUtils.showDateTimePicker(getContext(), binding.txtStartDate);
+        DateTimePickerUtils.showDateTimePicker(getContext(), binding.txtEndDate);
 
         // set up switch for no end date
         binding.swhNoEndDate.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -94,7 +85,7 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
         try {
             // Start date
             String startDateStr = binding.txtStartDate.getText().toString();
-            Date startDate = DatePickerUtil.parseDate(getContext(), startDateStr);
+            Date startDate = DateTimePickerUtils.parseDateTime(getContext(), startDateStr);
             binding.txtStartDate.setError(null);
             if (startDate == null) {
                 binding.txtStartDate.setError(getString(R.string.msg_error_start_date_required));
@@ -108,7 +99,7 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
             if (!isIndefinite) {
                 String endDateStr = binding.txtEndDate.getText().toString();
                 if (!endDateStr.isEmpty()) {
-                    endDate = DatePickerUtil.parseDate(getContext(), endDateStr);
+                    endDate = DateTimePickerUtils.parseDateTime(getContext(), endDateStr);
                 } else {
                     binding.txtEndDate.setError(getString(R.string.msg_error_end_date_required));
                     return null;
@@ -118,22 +109,10 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
             // Interval
             int interval = binding.sekFrequency.getProgress();
 
-            // time
-            String time = binding.edtTime.getText().toString();
-            binding.edtTime.setError(null);
-            if (time.isEmpty()) {
-                binding.edtTime.setError(getString(R.string.msg_error_time_required));
-                return null;
-            }
-
-
-
-            ArrayList<String> times = null;
-
             // Frequency
-            String frequency = Schedule.FREQUENCY_DAILY;
+            String frequency = Schedule.FREQUENCY_HOURLY;
 
-            ArrayList<String> daysOfWeek = new ArrayList<>();
+            ArrayList<Integer> daysOfWeek = new ArrayList<>();
             daysOfWeek.add(Schedule.WEEKDAY_SUNDAY);
             daysOfWeek.add(Schedule.WEEKDAY_MONDAY);
             daysOfWeek.add(Schedule.WEEKDAY_TUESDAY);
@@ -148,8 +127,7 @@ public class EveryXHoursCard extends Fragment implements ScheduleProvider {
                     isIndefinite,
                     frequency,
                     interval,
-                    daysOfWeek,
-                    times
+                    daysOfWeek
             );
         } catch (Exception e) {
             e.printStackTrace();

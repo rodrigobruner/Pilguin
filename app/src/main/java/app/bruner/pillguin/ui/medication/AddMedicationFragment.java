@@ -18,6 +18,7 @@ import app.bruner.pillguin.databinding.FragmentAddMedicationBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
 import app.bruner.pillguin.ui.medication.frequencies.CustomCard;
 import app.bruner.pillguin.ui.medication.frequencies.EveryXHoursCard;
+import app.bruner.pillguin.ui.medication.frequencies.IntervalCard;
 
 public class AddMedicationFragment extends Fragment {
 
@@ -77,7 +78,9 @@ public class AddMedicationFragment extends Fragment {
 
                 // decide which fragment to show
                 Fragment fragment;
-                if (selectedFrequency.equals(frequencyTypes[1])) { //Some days of the week
+                if (selectedFrequency.equals(frequencyTypes[1])) { // intervals
+                    fragment  = new IntervalCard();
+                }else if (selectedFrequency.equals(frequencyTypes[2])) { //custom
                     fragment = new CustomCard();
                 } else { // Every X hours
                     fragment = new EveryXHoursCard();

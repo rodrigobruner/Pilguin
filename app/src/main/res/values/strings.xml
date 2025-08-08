@@ -19,10 +19,8 @@
     <!-- do not change the order here! Check AddMedicineFragment.setUpFrequencyType() -->
     <string-array name="list_frequency_types">
         <item>Every X hours</item>
-        <item>Custom</item>
-<!--        <item>Some days of the week</item>-->
-<!--        <item>Every X days</item>-->
-<!--        <item>Once</item>-->
+        <item>Intervals</item>
+        <item>Specific days</item>
     </string-array>
 
     <!-- card_every_x_hour -->
@@ -34,6 +32,15 @@
     <string name="msg_error_start_date_required">Start date is required</string>
     <string name="msg_error_end_date_required">End date is required</string>
     <string name="msg_error_time_required">Please select a time</string>
+
+    <!-- card_intervals -->
+    <string name="txt_card_interval_title">Intervals</string>
+    <string-array name="list_interval">
+        <item>days</item>
+        <item>weeks</item>
+        <item>months</item>
+    </string-array>
+    <string name="msg_error_interval_required">Inform a interval</string>
 
     <!--- card_custom -->
     <string name="txt_custom_frequency">Custom frequency</string>
