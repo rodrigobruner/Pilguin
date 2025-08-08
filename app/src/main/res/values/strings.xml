@@ -42,29 +42,9 @@
     </string-array>
     <string name="msg_error_interval_required">Inform a interval</string>
 
-    <!--- card_custom -->
-    <string name="txt_custom_frequency">Custom frequency</string>
-    <string-array name="list_frequency_months">
-        <item>Every month</item>
-        <item>Every 2 months</item>
-        <item>Every 3 months</item>
-        <item>Every 4 months</item>
-        <item>Every 5 months</item>
-        <item>Every 6 months</item>
-        <item>Every 7 months</item>
-        <item>Every 8 months</item>
-        <item>Every 9 months</item>
-        <item>Every 10 months</item>
-        <item>Every 11 months</item>
-        <item>Every 12 months</item>
-    </string-array>
 
-    <string-array name="list_frequency_week">
-        <item>Every week</item>
-        <item>Every 2 weeks</item>
-        <item>Every 3 weeks</item>
-    </string-array>
-
+    <!-- card_specific_days -->
+    <string name="txt_custom_frequency">Custom Frequency</string>
     <string name="txt_week_monday">Monday</string>
     <string name="txt_week_tuesday">Tuesday</string>
     <string name="txt_week_wednesday">Wednesday</string>
@@ -85,6 +65,8 @@
 
 
     <!-- -->
-    <string name="date_picker_invalid_format">"Invalid date format. Expected format: YYYY-MM-DD"</string>
+    <string name="date_picker_invalid_format">"Invalid date format."</string>
 
+
+    <string name="msg_you_took">Recorded! You took </string>
 </resources>

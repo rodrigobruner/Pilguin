@@ -65,6 +65,11 @@ public class MedicationUtils {
         save(context, list);
     }
 
+    public static void update(Context context, Medication medication) {
+        delete(context, medication.getId());
+        add(context, medication);
+    }
+
     // Sync data
 
     // Sends updated medication data to the other device

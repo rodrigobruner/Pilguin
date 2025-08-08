@@ -4,19 +4,24 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.wear.widget.WearableRecyclerView;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
 import app.bruner.library.models.Medication;
 import app.bruner.watch.adapter.MedicationAdapter;
 import app.bruner.watch.databinding.ActivityMedicationListBinding;
-import app.bruner.library.moc.MedicationsMoc;
+import app.bruner.library.viewModels.MedicationViewModel;
 
 public class MedicationListActivity extends AppCompatActivity {
 
-    ActivityMedicationListBinding binding;
+    private ActivityMedicationListBinding binding;
 
-    ArrayList<Medication> medicationList = new ArrayList<>();
+    private ArrayList<Medication> medicationList = new ArrayList<>();
+
+    private MedicationViewModel viewModel;
+
+    private MedicationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +32,23 @@ public class MedicationListActivity extends AppCompatActivity {
     }
 
     private void init() {
-        getMedicationList();
+        viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
         setupRecyclerView();
+        observeMedications();
     }
 
     private void setupRecyclerView() {
-        WearableRecyclerView recyclerView = binding.rcvMedications;
+        binding.rcvMedications.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
 
-        // Adicione o LayoutManager
-        recyclerView.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
-
-        MedicationAdapter adapter = new MedicationAdapter(getBaseContext(), medicationList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setEdgeItemsCenteringEnabled(true);
+        // Passe a lista para o adapter
+        adapter = new MedicationAdapter(this);
+        binding.rcvMedications.setAdapter(adapter);
+        binding.rcvMedications.setEdgeItemsCenteringEnabled(true);
     }
 
-    private void getMedicationList() {
-        medicationList = MedicationsMoc.getMedications();
-
+    private void observeMedications() {
+        viewModel.getMedications().observe(this, medications -> {
+            adapter.setMedications(medications);
+        });
     }
 }

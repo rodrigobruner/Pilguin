@@ -12,8 +12,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Date;
+
 import app.bruner.library.models.Medication;
+import app.bruner.library.models.SideEffect;
+import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
+import app.bruner.pillguin.R;
 import app.bruner.pillguin.adapters.MedicationAdapter;
 import app.bruner.pillguin.databinding.FragmentMedicationBinding;
 
@@ -49,12 +54,19 @@ public class MedicationFragment extends Fragment {
             // buttons to inform that took medication
             @Override
             public void onTookMedication(Medication medication) {
-                Toast.makeText(getContext(), "Took " + medication.getName(), Toast.LENGTH_SHORT).show();
+                medication.getSchedule().addWhenTook(new Date());
+                MedicationUtils.update(getContext(), medication);
+                Toast.makeText(getContext(), getString(R.string.msg_you_took) + medication.getName(), Toast.LENGTH_SHORT).show();
             }
 
             // button to report side effects
             @Override
             public void onReportSideEffects(Medication medication) {
+
+                //TODO: Implement a dialog or new fragment to report side effects
+                medication.getSideEffects().add(new SideEffect("New Side Effect", new Date()));
+                MedicationUtils.update(getContext(), medication);
+
                 Toast.makeText(getContext(), "Report sideEffects " + medication.getName(), Toast.LENGTH_SHORT).show();
             }
 

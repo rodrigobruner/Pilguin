@@ -127,6 +127,11 @@ public class Schedule implements Serializable {
         this.whenTook = whenTook;
     }
 
+    public void addWhenTook(Date date) {
+        this.whenTook.add(date);
+        setNextTime();
+    }
+
     public boolean isExpired() {
         return isExpired;
     }

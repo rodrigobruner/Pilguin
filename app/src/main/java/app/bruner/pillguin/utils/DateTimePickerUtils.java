@@ -107,34 +107,4 @@ public class DateTimePickerUtils {
             datePickerDialog.show();
         });
     }
-
-    public static Date parseDateTime(Context context, String dateTimeStr) {
-        if (dateTimeStr == null || dateTimeStr.isEmpty()) {
-            return null;
-        }
-
-        try {
-            SimpleDateFormat dateTimeFormat = new SimpleDateFormat(
-                    Constants.DATE_FORMATTER + " " + Constants.TIME_FORMATTER,
-                    Locale.CANADA);
-            return dateTimeFormat.parse(dateTimeStr);
-        } catch (ParseException e) {
-            Log.i("DateTimePickerUtils", "Trying to parse as date only: " + dateTimeStr);
-            return parseDate(context, dateTimeStr);
-        }
-    }
-
-    public static Date parseDate(Context context, String dateStr) {
-        if (dateStr == null || dateStr.isEmpty()) {
-            return null;
-        }
-
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMATTER, Locale.CANADA);
-            return dateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            Log.i("DateTimePickerUtils", "Invalid date format: " + dateStr, e);
-        }
-        return null;
-    }
 }

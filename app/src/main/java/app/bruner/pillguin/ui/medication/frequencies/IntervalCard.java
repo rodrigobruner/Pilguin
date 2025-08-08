@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import app.bruner.library.models.Schedule;
+import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.CardCustomBinding;
 import app.bruner.pillguin.databinding.CardIntervalsBinding;
@@ -74,7 +75,7 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
 
         // Start date
         String startDateStr = binding.txtStartDate.getText().toString();
-        Date startDate = DateTimePickerUtils.parseDateTime(getContext(), startDateStr);
+        Date startDate = DateTimeParseUtils.parseDateTime(getContext(), startDateStr);
         binding.txtStartDate.setError(null);
         if (startDate == null) {
             binding.txtStartDate.setError(getString(R.string.msg_error_start_date_required));
@@ -88,7 +89,7 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
         if (!isIndefinite) {
             String endDateStr = binding.txtEndDate.getText().toString();
             if (!endDateStr.isEmpty()) {
-                endDate = DateTimePickerUtils.parseDateTime(getContext(), endDateStr);
+                endDate = DateTimeParseUtils.parseDateTime(getContext(), endDateStr);
             } else {
                 binding.txtEndDate.setError(getString(R.string.msg_error_end_date_required));
                 return null;

@@ -8,8 +8,8 @@ public class SideEffect implements Serializable {
     private String description;
     private Date datetimeReported;
 
-    public SideEffect(long id, String description, String severity, Date datetimeReported) {
-        this.id = id; //System.currentTimeMillis();
+    public SideEffect(String description, Date datetimeReported) {
+        this.id = System.currentTimeMillis();
         this.description = description;
         this.datetimeReported = datetimeReported;
     }

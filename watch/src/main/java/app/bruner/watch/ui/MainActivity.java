@@ -8,6 +8,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import app.bruner.library.moc.MedicationsMoc;
+import app.bruner.library.utils.MedicationUtils;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMainBinding;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.btnDailyMedication.setOnClickListener(this);
         binding.btnNextMedication.setOnClickListener(this);
         binding.btnReportSideEffect.setOnClickListener(this);
+//        initShardPreferences();
     }
 
     @Override
@@ -39,5 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.btn_report_side_effect) {
             startActivity(new Intent(this, ReportSideEffectActivity.class));
         }
+    }
+
+
+    private void initShardPreferences() {
+        MedicationUtils.add(getApplicationContext(), MedicationsMoc.getMedication());
     }
 }

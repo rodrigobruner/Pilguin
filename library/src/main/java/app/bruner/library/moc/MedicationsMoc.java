@@ -69,7 +69,7 @@ public class MedicationsMoc {
     }
 
 
-    public Medication getMedication() {
+    public static Medication getMedication() {
         ArrayList<Medication> medications = getMedications();
         if (medications.isEmpty()) {
             return null;

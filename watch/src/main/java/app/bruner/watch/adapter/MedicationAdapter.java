@@ -1,7 +1,6 @@
 package app.bruner.watch.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,20 +8,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.bruner.library.models.Medication;
+import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.watch.databinding.MedicationRowBinding;
 import app.bruner.watch.ui.MedicationActivity;
 
 public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Medication> medicationList;
+    private ArrayList<Medication> medications = new ArrayList<>();
     private Context context;
 
-    public MedicationAdapter(Context context, ArrayList<Medication> medicationList) {
+    public MedicationAdapter(Context context) {
         super();
         this.context = context;
-        this.medicationList = medicationList;
     }
 
     @NonNull
@@ -35,30 +35,36 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder) holder).bindView(medicationList.get(position), position);
+        ((ViewHolder) holder).bindView(medications.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        int count = (medicationList == null) ? 0 : medicationList.size();
-        return count;
+        return medications.size();
+    }
+
+    public List<Medication> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(List<Medication> newMedications) {
+        medications.clear();
+        medications.addAll(newMedications);
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        MedicationRowBinding recyclerRowBinding;
+        MedicationRowBinding binding;
 
         public ViewHolder(MedicationRowBinding rowBinding) {
             super(rowBinding.getRoot());
-            this.recyclerRowBinding = rowBinding;
+            this.binding = rowBinding;
         }
 
         void bindView(final Medication medication, final int position) {
-            recyclerRowBinding.txtMedicationName.setText(medication.getName());
-            if (medication.getSchedule() != null && medication.getSchedule().getTimes() != null && !medication.getSchedule().getTimes().isEmpty()) {
-                recyclerRowBinding.txtTime.setText(medication.getSchedule().getTimes());
-            } else {
-                recyclerRowBinding.txtTime.setText("");
-            }
+            binding.txtMedicationName.setText(medication.getName());
+
+            binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
 
             itemView.setOnClickListener(v -> {
                 android.content.Intent intent = new android.content.Intent(context, app.bruner.watch.ui.MedicationActivity.class);

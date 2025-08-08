@@ -50,8 +50,8 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.txtName.setText(medication.getName());
             binding.txtDosage.setText(medication.getDosage());
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
-            if (medication.getSchedule() != null && medication.getSchedule().getTimes() != null && !medication.getSchedule().getTimes().isEmpty()) {
-                binding.txtTime.setText(medication.getSchedule().getTimes());
+            if (medication.getSchedule() != null) {
+                binding.txtTime.setText(medication.getSchedule().getNextTime().toString());
             } else {
                 binding.txtTime.setText("");
             }
