@@ -53,7 +53,7 @@
                     android:background="@drawable/circle"
                     android:backgroundTint="@color/light_green"
                     app:tint="@color/white"
-                    android:src="@drawable/ic_pill"
+                    android:src="@drawable/ic_save"
                     android:scaleType="centerInside" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

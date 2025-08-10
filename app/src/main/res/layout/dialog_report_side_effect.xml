@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_report_side_effects"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/editDialogSideEffect"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="@string/txt_describe_side_effect"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/buttonDialogSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_submit"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+</layout>

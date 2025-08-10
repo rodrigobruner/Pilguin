@@ -3,5 +3,6 @@
     <string name="txt_medications">Medications</string>
     <string name="txt_next_medication">Next medication</string>
     <string name="txt_you_took_it">You took your medication.</string>
+    <string name="txt_side_effect_reported">Side effect saved</string>
 
 </resources>

@@ -2,6 +2,7 @@ package app.bruner.watch.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,6 +71,13 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         if(v.getId() == binding.btnTookThisMedication.getId()) {
             // TODO: save took medication
             ConfirmUtils.showSavedMessage(getString(R.string.txt_you_took_it), this);
+
+            // delay for 1 second to show confirmation message
+            new Handler().postDelayed(() -> {
+                Intent redirectIntent = new Intent(this, MedicationListActivity.class);
+                redirectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(redirectIntent);
+            }, 1000);
         }
 
         if(v.getId() == binding.btnReportSideEffects.getId()) {

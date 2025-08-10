@@ -63,9 +63,8 @@ public class MedicationFragment extends Fragment {
             @Override
             public void onReportSideEffects(Medication medication) {
 
-                //TODO: Implement a dialog or new fragment to report side effects
-                medication.getSideEffects().add(new SideEffect("New Side Effect", new Date()));
-                MedicationUtils.update(getContext(), medication);
+                ReportSideEffectDialog dialog = ReportSideEffectDialog.newInstance(medication);
+                dialog.show(getParentFragmentManager(), "ReportSideEffectDialog");
 
                 Toast.makeText(getContext(), "Report sideEffects " + medication.getName(), Toast.LENGTH_SHORT).show();
             }
@@ -80,7 +79,13 @@ public class MedicationFragment extends Fragment {
             // click to show medication details
             @Override
             public void onClick(Medication medication) {
-                Toast.makeText(getContext(), "Clicked on " + medication.getName(), Toast.LENGTH_SHORT).show();
+                MedicationDetailFragment detailFragment = MedicationDetailFragment.newInstance(medication);
+
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, detailFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

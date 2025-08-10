@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.view.View;
 
@@ -22,6 +23,7 @@ import app.bruner.library.models.SideEffect;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityReportSideEffectBinding;
+import utils.ConfirmUtils;
 
 public class ReportSideEffectActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -76,7 +78,14 @@ public class ReportSideEffectActivity extends AppCompatActivity implements View.
 
             medication.getSideEffects().add(new SideEffect(sideEffect, new Date()));
             MedicationUtils.update(getBaseContext(), medication);
-            finish();
+            ConfirmUtils.showSavedMessage(getString(R.string.txt_side_effect_reported), this);
+
+            // delay for 1 second to show confirmation message
+            new Handler().postDelayed(() -> {
+                Intent redirectIntent = new Intent(this, MedicationListActivity.class);
+                redirectIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(redirectIntent);
+            }, 1000);
         }
     }
 }

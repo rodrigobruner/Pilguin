@@ -83,6 +83,36 @@ public class Schedule implements Serializable {
         return daysOfWeek;
     }
 
+    public ArrayList<String> getDaysOfWeekAsString(){
+        ArrayList<String> days = new ArrayList<>();
+        for (Integer day : daysOfWeek) {
+            switch (day) {
+                case WEEKDAY_MONDAY:
+                    days.add("Monday");
+                    break;
+                case WEEKDAY_TUESDAY:
+                    days.add("Tuesday");
+                    break;
+                case WEEKDAY_WEDNESDAY:
+                    days.add("Wednesday");
+                    break;
+                case WEEKDAY_THURSDAY:
+                    days.add("Thursday");
+                    break;
+                case WEEKDAY_FRIDAY:
+                    days.add("Friday");
+                    break;
+                case WEEKDAY_SATURDAY:
+                    days.add("Saturday");
+                    break;
+                case WEEKDAY_SUNDAY:
+                    days.add("Sunday");
+                    break;
+            }
+        }
+        return days;
+    }
+
     public void setDaysOfWeek(ArrayList<Integer> daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
     }
@@ -128,6 +158,9 @@ public class Schedule implements Serializable {
     }
 
     public void addWhenTook(Date date) {
+        if (this.whenTook == null) {
+            this.whenTook = new ArrayList<>();
+        }
         this.whenTook.add(date);
         setNextTime();
     }
@@ -143,6 +176,11 @@ public class Schedule implements Serializable {
     public void setNextTime() {
 
         if( isExpired ){ // already expired
+            return;
+        }
+
+        if (this.whenTook == null) {
+            this.whenTook = new ArrayList<>();
             return;
         }
 
