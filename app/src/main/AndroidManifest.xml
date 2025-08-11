@@ -19,6 +19,11 @@
         android:theme="@style/Theme.Pillguin"
         tools:targetApi="31">
 
+        <!-- Wearable app descriptor - ADICIONAR ESTA LINHA -->
+        <meta-data
+            android:name="com.google.android.wearable.beta.app"
+            android:resource="@xml/wearable_app_desc" />
+
         <!-- Add the receivers -->
         <receiver android:name=".receivers.MedicationAlarmReceiver"
             android:enabled="true"

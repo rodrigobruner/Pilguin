@@ -59,26 +59,20 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
 
         // =========== WATCH
 
-        PendingIntent watchShowMedicationIntent = createPendingIntent(
+        PendingIntent watchShowMedicationIntent = createWatchPendingIntent(
                 context,
                 medication,
-                EXTRA_NAVIGATION_VALUE_DETAILS,
-                MainActivity.class
+                "app.bruner.watch.SHOW_MEDICATION_DETAILS"
         );
 
-        PendingIntent watchITookMedicationIntent = createPendingIntent(
-                context,
-                medication,
-                EXTRA_NAVIGATION_VALUE_TOOK,
-                MainActivity.class
-        );
+        PendingIntent watchITookMedicationIntent2 = createMedicationTakenIntent(context, medication);
 
         // set wearable extender for watch
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender()
                 .addAction(new NotificationCompat.Action.Builder(
                         android.R.drawable.ic_menu_agenda,
                         context.getString(R.string.txt_notification_action_taken),
-                        watchITookMedicationIntent
+                        watchITookMedicationIntent2
                 ).build())
                 .addAction(new NotificationCompat.Action.Builder(
                         android.R.drawable.ic_menu_view,
@@ -139,6 +133,26 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
         );
     }
 
+    private PendingIntent createWatchPendingIntent(Context context, Medication medication, String action) {
+        Intent intent = new Intent();
+
+        // use the action to differentiate between watch and phone
+        intent.setAction("app.bruner.watch.MEDICATION_DETAILS");
+        intent.setPackage("app.bruner.pillguin");
+
+        intent.putExtra(EXTRA_MEDICATION, new Gson().toJson(medication));
+        intent.putExtra(EXTRA_NAVIGATION, EXTRA_NAVIGATION_VALUE_DETAILS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        return PendingIntent.getActivity(  // create a pending intent for the watch
+                context,
+                (int) System.currentTimeMillis(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+    }
+
+    // create a pending intent for took medication receiver
     private PendingIntent createMedicationTakenIntent(Context context, Medication medication) {
         Intent intent = new Intent(context, MedicationTakenReceiver.class);
         intent.putExtra(EXTRA_MEDICATION, new Gson().toJson(medication));

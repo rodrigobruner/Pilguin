@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import app.bruner.library.services.MedicationSyncService;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.ActivityMainBinding;
 import app.bruner.pillguin.utils.Constants;
@@ -27,8 +28,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         init();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Parar o service se necessário
+        Intent serviceIntent = new Intent(this, MedicationSyncService.class);
+        stopService(serviceIntent);
+    }
+
     private void init(){
         binding.btnContinue.setOnClickListener(this);
+        Intent serviceIntent = new Intent(this, MedicationSyncService.class);
+        startService(serviceIntent);
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }

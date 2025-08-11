@@ -15,8 +15,11 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
-import app.bruner.library.utils.MedicationUtils;
+import app.bruner.library.utils.DataSyncUtils;
 
+/**
+ * Service to handle medication data synchronization between phone and watch
+  */
 public class MedicationSyncService extends Service implements DataClient.OnDataChangedListener {
 
     private static final String TAG = "MedicationSyncService";
@@ -26,14 +29,12 @@ public class MedicationSyncService extends Service implements DataClient.OnDataC
     public void onCreate() {
         super.onCreate();
         Wearable.getDataClient(this).addListener(this);
-        Log.d(TAG, "MedicationSyncService started");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Wearable.getDataClient(this).removeListener(this);
-        Log.d(TAG, "MedicationSyncService stopped");
     }
 
     @Override
@@ -43,8 +44,8 @@ public class MedicationSyncService extends Service implements DataClient.OnDataC
                 DataItem item = event.getDataItem();
                 if (item.getUri().getPath().equals(MEDICATIONS_SYNC_PATH)) {
                     DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                    MedicationUtils.receiveUpdate(this, dataMap);
-                    Log.d(TAG, "Medication data received and updated");
+                    String source = dataMap.getString("source", "unknown");
+                    DataSyncUtils.receiveUpdate(this, dataMap);
                 }
             }
         }

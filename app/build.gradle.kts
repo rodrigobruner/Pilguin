@@ -47,16 +47,26 @@ android {
         }
     }
 
+    // Package watch APK into phone APK
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(project(":library"))
     implementation(libs.gson)
+
+    // Add Wearable support
+    implementation(libs.play.services.wearable)
+    wearApp(project(":watch"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

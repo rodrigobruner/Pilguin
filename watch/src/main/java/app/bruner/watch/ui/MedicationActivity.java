@@ -1,5 +1,6 @@
 package app.bruner.watch.ui;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,10 +8,13 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.DateTimeParseUtils;
+import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.utils.MedicineTypeIconMapper;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMedicationBinding;
@@ -69,7 +73,8 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if(v.getId() == binding.btnTookThisMedication.getId()) {
-            // TODO: save took medication
+            medication.getSchedule().addWhenTook(new Date());
+            MedicationUtils.update(this, medication);
             ConfirmUtils.showSavedMessage(getString(R.string.txt_you_took_it), this);
 
             // delay for 1 second to show confirmation message

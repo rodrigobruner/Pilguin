@@ -7,12 +7,12 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "app.bruner.watch"
+        // Usar o mesmo applicationId do app principal
+        applicationId = "app.bruner.pillguin"
         minSdk = 33
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
     }
 
     buildTypes {
@@ -33,11 +33,9 @@ android {
         viewBinding = true
         buildConfig = true
     }
-
 }
 
 dependencies {
-
     implementation(libs.play.services.wearable)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -47,4 +45,5 @@ dependencies {
     implementation(project(":library"))
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.gson)
 }

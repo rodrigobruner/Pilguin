@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,21 +15,28 @@ import app.bruner.library.models.Medication;
 
 public class MedicationUtils {
 
-    private static final String SHARED_PREFS_NAME = "medications";
-    private static final String KEY_MEDICATION_LIST = "medication_list";
+    public static final String SHARED_PREFS_NAME = "medications";
+    public static final String KEY_MEDICATION_LIST = "medication_list";
 
     private static Gson gson = new Gson();
 
     // save the medication
     public static void save(Context context, List<Medication> medicationList) {
+        save(context, medicationList, true); // Por padrão, sincroniza
+    }
+
+    // NOVO: save com controle de sync
+    public static void save(Context context, List<Medication> medicationList, boolean shouldSync) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         String json = gson.toJson(medicationList);
         editor.putString(KEY_MEDICATION_LIST, json);
         editor.apply();
 
-        // sync data after saving (delete and add also call save)
-        sendUpdate(context);
+        // Sync apenas se solicitado (evita loops)
+        if (shouldSync) {
+            DataSyncUtils.sendUpdate(context);
+        }
     }
 
     // get the medication list
@@ -68,31 +72,5 @@ public class MedicationUtils {
     public static void update(Context context, Medication medication) {
         delete(context, medication.getId());
         add(context, medication);
-    }
-
-    // Sync data
-
-    // Sends updated medication data to the other device
-    public static void sendUpdate(Context context) {
-        ArrayList<Medication> medications = getAll(context);
-        Gson gson = new Gson();
-        DataMap dataMap = new DataMap();
-        dataMap.putString(SHARED_PREFS_NAME, gson.toJson(medications));
-
-        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/medications_sync");
-        putDataMapRequest.getDataMap().putAll(dataMap);
-        PutDataRequest request = putDataMapRequest.asPutDataRequest();
-        Wearable.getDataClient(context).putDataItem(request);
-    }
-
-    // Receives medication data and updates local preferences
-    public static void receiveUpdate(Context context, DataMap dataMap) {
-        if (dataMap.containsKey(SHARED_PREFS_NAME)) {
-            String json = dataMap.getString(SHARED_PREFS_NAME);
-            SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(KEY_MEDICATION_LIST, json);
-            editor.apply();
-        }
     }
 }
