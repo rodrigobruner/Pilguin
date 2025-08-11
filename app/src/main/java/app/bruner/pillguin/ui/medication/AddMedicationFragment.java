@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.Schedule;
 import app.bruner.library.utils.MedicationUtils;
+import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.FragmentAddMedicationBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
@@ -139,6 +140,8 @@ public class AddMedicationFragment extends Fragment {
 
         // sava medication
         MedicationUtils.add(getContext(), medication);
+
+        ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication);
 
         // show success message
         Toast.makeText(requireContext(), getString(R.string.msg_success_saved), Toast.LENGTH_SHORT).show();

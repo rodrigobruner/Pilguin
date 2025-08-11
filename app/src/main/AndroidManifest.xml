@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- permissions -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,8 +18,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pillguin"
         tools:targetApi="31">
+
+        <!-- Add the receivers -->
+        <receiver android:name=".receivers.MedicationAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.MedicationTakenReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Add the services -->
         <service android:name="app.bruner.library.services.MedicationSyncService"
             android:exported="false" />
+
+        <!-- Add the activities -->
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false" />
@@ -22,7 +42,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

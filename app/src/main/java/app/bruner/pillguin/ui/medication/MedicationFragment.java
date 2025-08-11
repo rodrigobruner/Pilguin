@@ -56,7 +56,7 @@ public class MedicationFragment extends Fragment {
             public void onTookMedication(Medication medication) {
                 medication.getSchedule().addWhenTook(new Date());
                 MedicationUtils.update(getContext(), medication);
-                Toast.makeText(getContext(), getString(R.string.msg_you_took) + medication.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.msg_you_took, medication.getName()) + medication.getName(), Toast.LENGTH_SHORT).show();
             }
 
             // button to report side effects

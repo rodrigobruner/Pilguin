@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Pillguin</string>
 
+    <!-- permissions -->
+    <string name="txt_permition_denied">Permission denied: </string>
+
     <!-- fragment_add_medicine -->
     <string name="txt_add_medication">Add Medication</string>
     <string name="txt_medication_name">Medication name</string>
@@ -79,9 +82,15 @@
     <string name="txt_recent"> Recent Intake Times</string>
     <string name="txt_no_data"> No entries yet. Mark your medicine as taken to see it here.</string>
 
+    <!-- Notification -->
+    <string name="txt_notification_title">Medication Reminder</string>
+    <string name="txt_notification_msg">It\'s time to take your medication: %s</string>
+    <string name="txt_notification_action_taken">Mark as taken</string>
+    <string name="txt_notification_action_see_detail">See datail</string>
 
 
-    <!-- -->
+
+    <!-- Date picker -->
     <string name="date_picker_invalid_format">"Invalid date format."</string>
 
     <string-array name="side_effect_severity_array">
@@ -92,5 +101,5 @@
     </string-array>
     <string name="txt_reported_side_effects"> Reported Side Effects</string>
     <string name="txt_side_effects_list"> All side effects reported for this medication are shown below.</string>
-    <string name="msg_you_took">Recorded! You took </string>
+    <string name="msg_you_took">Recorded! You took %s</string>
 </resources>

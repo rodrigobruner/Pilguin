@@ -15,6 +15,7 @@ import java.util.List;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.Schedule;
+import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.databinding.FragmentMedicationDetailsBinding;
 
@@ -84,6 +85,10 @@ public class MedicationDetailsFragment extends Fragment {
 //            }
 
             binding.textSchedule.setText(sb.toString());
+
+            String nextTime = DateTimeParseUtils.formatDateTime(getContext(), schedule.getNextTime());
+            binding.textNextTime.setText(nextTime);
+
         } else {
             binding.textSchedule.setText("No schedule info");
         }
