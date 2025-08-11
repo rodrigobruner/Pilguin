@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 import app.bruner.library.models.Medication;
 
+/**
+ * Util to deal with data syn between phone and watch
+ */
 public class DataSyncUtils {
 
     private static final String TAG = "DataSyncUtils";
@@ -30,7 +33,7 @@ public class DataSyncUtils {
         sendData(context, medicationsJson, SOURCE_PHONE_TO_WATCH);
     }
 
-    // NOVO: send from watch to phone
+    // send from watch to phone
     public static void sendMedicationsToPhone(Context context, String medicationsJson) {
         sendData(context, medicationsJson, SOURCE_WATCH_TO_PHONE);
     }
@@ -38,29 +41,33 @@ public class DataSyncUtils {
 
     // Generic method to send data
     private static void sendData(Context context, String medicationsJson, String source) {
-
+        // create the data map request
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(MEDICATIONS_SYNC_PATH);
         DataMap dataMap = putDataMapRequest.getDataMap();
+        // set the data
         dataMap.putString("medications", medicationsJson);
         dataMap.putString("source", source);
         dataMap.putLong("timestamp", System.currentTimeMillis());
 
+        // create the put data request
         PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
-        putDataRequest.setUrgent();
+        putDataRequest.setUrgent(); // set to send now
 
+        // send the data
         Task<DataItem> putDataTask = Wearable.getDataClient(context).putDataItem(putDataRequest);
         putDataTask.addOnSuccessListener(dataItem -> {
-            Log.d(TAG, "sent from " + source);
+//            Log.d(TAG, "sent from " + source);
         }).addOnFailureListener(e -> {
-            Log.e(TAG, "FAIL data from " + source, e);
+//            Log.e(TAG, "FAIL data from " + source, e);
         });
     }
 
 
     // send update to the other device
     public static void sendUpdate(Context context) {
+        // get all medications
         ArrayList<Medication> medications = MedicationUtils.getAll(context);
-        String medicationsJson = gson.toJson(medications);
+        String medicationsJson = gson.toJson(medications); // to json
 
         // check if is a watch or phone
         if (isWatchDevice(context)) {
@@ -94,16 +101,12 @@ public class DataSyncUtils {
 
     // receive updates from the other device
     public static void receiveUpdate(Context context, DataMap dataMap) {
-        if (dataMap.containsKey("medications")) {
+        if (dataMap.containsKey("medications")) { // if the data map contain medication
+            // get it
             String json = dataMap.getString("medications");
-            String source = dataMap.getString("source", "unknown");
-
-            // save the medications to SharedPreferences
-            // I not use the MedicationUtils.save() to avoid loop
-            SharedPreferences prefs = context.getSharedPreferences(MedicationUtils.SHARED_PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(MedicationUtils.KEY_MEDICATION_LIST, json);
-            editor.apply();
+            ArrayList<Medication> medications = gson.fromJson(json, MedicationUtils.getAll(context).getClass());
+            // save without sync to avoid loops
+            MedicationUtils.save(context.getApplicationContext(), medications, false);
         }
     }
 }

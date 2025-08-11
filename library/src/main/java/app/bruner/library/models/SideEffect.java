@@ -3,6 +3,9 @@ package app.bruner.library.models;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * SideEffect model
+ */
 public class SideEffect implements Serializable {
     private long id;
     private String description;

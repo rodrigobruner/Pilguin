@@ -4,6 +4,9 @@ import android.content.Context;
 
 import app.bruner.library.R;
 
+/**
+ * Util to map medicine types and icons
+ */
 public class MedicineTypeIconMapper {
 
     // base on id return a icon resource id
@@ -24,11 +27,14 @@ public class MedicineTypeIconMapper {
         }
     }
 
+    // return a icon resource id by type
     public static int getIconByType(Context context, String type) {
+        // get medication types array from resources
         String[] medicationTypesArray = context.getResources().getStringArray(R.array.list_medication_types);
-        for (int i = 0; i < medicationTypesArray.length; i++) {
-            if (medicationTypesArray[i].equalsIgnoreCase(type)) {
-                return getIconByPosition(i);
+
+        for (int i = 0; i < medicationTypesArray.length; i++) { // foreach type in array
+            if (medicationTypesArray[i].equalsIgnoreCase(type)) { // if found
+                return getIconByPosition(i); // return icon by position
             }
         }
         return getIconByPosition(-1);

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Schedule model
+ */
 public class Schedule implements Serializable {
 
     public final static String FREQUENCY_HOURLY = "hourly";
@@ -50,17 +53,17 @@ public class Schedule implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isIndefinitePeriod = isIndefinitePeriod;
-
-
         this.frequency = frequency;
         this.interval = interval;
+
+        // prevent null pointer exception
         this.daysOfWeek = daysOfWeek != null ? daysOfWeek : new ArrayList<>();
 
-        this.isExpired = false;
+        this.isExpired = false; // not expired by default
 
-        this.whenTook = new ArrayList<>();
-        this.whenTook.add(startDate);
-        setNextTime();
+        this.whenTook = new ArrayList<>(); // init empty
+        this.whenTook.add(startDate); // add start date as first taken
+        setNextTime(); // calculate the next time
     }
 
     public String getFrequency() {
@@ -83,6 +86,7 @@ public class Schedule implements Serializable {
         return daysOfWeek;
     }
 
+    // get days of the week as strings
     public ArrayList<String> getDaysOfWeekAsString(){
         ArrayList<String> days = new ArrayList<>();
         for (Integer day : daysOfWeek) {
@@ -157,6 +161,7 @@ public class Schedule implements Serializable {
         this.whenTook = whenTook;
     }
 
+    // add a date to the list of the medication was taken
     public void addWhenTook(Date date) {
         if (this.whenTook == null) {
             this.whenTook = new ArrayList<>();
@@ -173,12 +178,14 @@ public class Schedule implements Serializable {
         isExpired = expired;
     }
 
+    // set the next time
     public void setNextTime() {
 
         if( isExpired ){ // already expired
             return;
         }
 
+        // check if null and init
         if (this.whenTook == null) {
             this.whenTook = new ArrayList<>();
             return;
@@ -189,6 +196,7 @@ public class Schedule implements Serializable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(lastTaken);
 
+        // add the interval by frequency
         switch (frequency) {
 
             case FREQUENCY_HOURLY:
@@ -203,7 +211,7 @@ public class Schedule implements Serializable {
 
             case FREQUENCY_WEEKLY:
                 if (daysOfWeek != null && !daysOfWeek.isEmpty()) {
-                    //
+                    // calculate the next week time
                     calculateNextWeekTime(calendar);
                 } else {
                     // add the interval in weeks
@@ -217,12 +225,14 @@ public class Schedule implements Serializable {
                 break;
         }
 
+        // get the next time
         this.nextTime = calendar.getTime();
 
         // check if expired
         checkIfExpired();
     }
 
+    // calculate the next time for week frequency
     private void calculateNextWeekTime(Calendar calendar) {
 
         // get the current day
@@ -252,10 +262,14 @@ public class Schedule implements Serializable {
         this.nextTime = calendar.getTime();
     }
 
+    // check if the schedule is expired
     private void checkIfExpired() {
+
+        // if period is indefinite not check expiration
         if (!isIndefinitePeriod && endDate != null) {
-            Date now = new Date();
-            if (nextTime.after(endDate) || now.after(endDate)) {
+            Date now = new Date(); // current time
+            if (nextTime.after(endDate) || now.after(endDate)) { // if next time is after end date
+                //set expired
                 this.isExpired = true;
                 this.nextTime = null;
             }

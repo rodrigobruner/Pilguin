@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import app.bruner.library.models.Medication;
 import app.bruner.library.repositories.MedicationRepository;
 
+/**
+ * MedicationViewModel
+ */
 public class MedicationViewModel extends AndroidViewModel {
 
     private final MedicationRepository repository;
@@ -25,5 +28,9 @@ public class MedicationViewModel extends AndroidViewModel {
 
     public void deleteMedication(long medicationId) {
         repository.deleteMedication(getApplication().getApplicationContext(), medicationId);
+    }
+
+    public void getNextMedications() {
+        repository.getNextMedications(getApplication().getApplicationContext());
     }
 }

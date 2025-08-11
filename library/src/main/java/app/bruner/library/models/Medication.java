@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Medication model
+ */
 public class Medication implements Serializable {
     private long id;
     private String name;

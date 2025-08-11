@@ -16,9 +16,9 @@ import app.bruner.library.models.Medication;
 import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.utils.MedicineTypeIconMapper;
+import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMedicationBinding;
-import app.bruner.library.moc.MedicationsMoc;
 import utils.ConfirmUtils;
 
 public class MedicationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,6 +26,8 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     public static final String MEDICATION_PARAM = "medication_obj";
 
     ActivityMedicationBinding binding;
+
+    MedicationViewModel viewModel;
 
     Medication medication;
 
@@ -38,6 +40,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void init() {
+        viewModel = new MedicationViewModel(getApplication());
         getMedication();
         setupViews();
         binding.btnTookThisMedication.setOnClickListener(this);
@@ -47,8 +50,12 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     private void getMedication(){
         medication = getIntent().getSerializableExtra(MEDICATION_PARAM, Medication.class);
         if(medication == null) {
-            // TODO: get NEXT medication
-            medication = new MedicationsMoc().getMedication();
+            viewModel.getMedications().observe(this, medications -> {
+                if (medications != null && !medications.isEmpty()) {
+                    medication = medications.get(0); // first in the list
+                    setupViews();
+                }
+            });
             return;
         }
         binding.txtNextMedication.setVisibility(View.GONE);

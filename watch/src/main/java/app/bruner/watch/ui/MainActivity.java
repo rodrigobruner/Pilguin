@@ -14,7 +14,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.wearable.Wearable;
 
-import app.bruner.library.moc.MedicationsMoc;
 import app.bruner.library.services.MedicationSyncService;
 import app.bruner.library.utils.DataSyncUtils;
 import app.bruner.library.utils.MedicationUtils;
@@ -63,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.btn_next_medication) {
             startActivity(new Intent(this, MedicationActivity.class));
         }
-    }
-
-
-    private void initShardPreferences() {
-        MedicationUtils.add(getApplicationContext(), MedicationsMoc.getMedication());
     }
 
     public void requestPermitions() {

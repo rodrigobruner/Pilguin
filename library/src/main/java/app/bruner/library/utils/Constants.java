@@ -1,5 +1,8 @@
 package app.bruner.library.utils;
 
+/**
+ * Constants
+ */
 public class Constants {
     // date and time formatters
     public static final String DATE_FORMATTER = "MMM dd, yyyy";
