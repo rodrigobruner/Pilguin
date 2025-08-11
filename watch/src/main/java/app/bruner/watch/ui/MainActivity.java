@@ -1,12 +1,16 @@
 package app.bruner.watch.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.wearable.Wearable;
 
@@ -16,6 +20,7 @@ import app.bruner.library.utils.DataSyncUtils;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMainBinding;
+import utils.Constants;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.btnNextMedication.setOnClickListener(this);
         Intent serviceIntent = new Intent(this, MedicationSyncService.class);
         startService(serviceIntent);
+        requestPermitions();
 
 //        testWearConnection();
 
@@ -62,6 +68,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initShardPreferences() {
         MedicationUtils.add(getApplicationContext(), MedicationsMoc.getMedication());
+    }
+
+    public void requestPermitions() {
+        // request permissions for recording audio, posting notifications, and scheduling alarms
+        String[] permissions = {
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.SCHEDULE_EXACT_ALARM
+        };
+
+        ActivityCompat.requestPermissions(this, permissions, Constants.PERMITION_CODE);
+    }
+
+    // deal with the result of the permission request
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constants.PERMITION_CODE) { // Check if all permissions were granted
+            for (int i = 0; i < permissions.length; i++) {
+                // If the permission denied, show a toast
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    String perm = permissions[i];
+                    String msg = getString(R.string.txt_permition_denied) + perm;
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     // test conection with the phone

@@ -25,16 +25,20 @@ import app.bruner.library.models.Medication;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.ActivityHomeBinding;
-import app.bruner.pillguin.ui.medication.AddMedicationFragment;
-import app.bruner.pillguin.ui.medication.MedicationDetailFragment;
-import app.bruner.pillguin.ui.medication.MedicationDetailsFragment;
-import app.bruner.pillguin.ui.medication.MedicationFragment;
+import app.bruner.pillguin.ui.medication.ReportFragment;
+import app.bruner.pillguin.ui.medication.add.AddMedicationFragment;
+import app.bruner.pillguin.ui.medication.detail.MedicationDetailFragment;
+import app.bruner.pillguin.ui.medication.MedicationListFragment;
 import app.bruner.pillguin.utils.Constants;
 
+/**
+ * Main activity for the application
+ */
 public class HomeActivity extends AppCompatActivity {
 
     ActivityHomeBinding binding;
 
+    // constants for parameters
     private static final String EXTRA_MEDICATION = "medication";
     private static final String EXTRA_NAVIGATION = "navigation_target";
     private static final String EXTRA_NAVIGATION_VALUE_DETAILS = "medication_details";
@@ -50,13 +54,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void init() {
         // start with the MedicationFragment
-        setFragment(new MedicationFragment());
+        setFragment(new MedicationListFragment());
         requestPermitions();
 
         // set up navigation bar buttons
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.medicine) { //medicine
-                setFragment(new MedicationFragment());
+            if (item.getItemId() == R.id.medicine) { //medications
+                setFragment(new MedicationListFragment());
                 return true;
             } else if (item.getItemId() == R.id.reports) { //reports
                 setFragment(new ReportFragment());
@@ -109,9 +113,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+    //========= Permission  Request =========
+
     public void requestPermitions() {
-        // Solicitar apenas POST_NOTIFICATIONS (única que precisa de dialog)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // API 33+
+        // show request permissions dialog for POST_NOTIFICATIONS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
 
@@ -120,8 +127,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        // Tratar SCHEDULE_EXACT_ALARM separadamente
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // API 31+
+        // permission for SCHEDULE_EXACT_ALARM
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (!alarmManager.canScheduleExactAlarms()) {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
@@ -130,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // deal with the result of the permission request
+    // deal with the permission results
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -31,20 +31,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Parar o service se necessário
+        // stop MedicationSyncService
         Intent serviceIntent = new Intent(this, MedicationSyncService.class);
         stopService(serviceIntent);
     }
 
     private void init(){
         binding.btnContinue.setOnClickListener(this);
+        // start MedicationSyncService
         Intent serviceIntent = new Intent(this, MedicationSyncService.class);
         startService(serviceIntent);
 
+        //TODO: app onboarding
+
+        // redirect to HomeActivity
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
+    // set up button to continue
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_continue){

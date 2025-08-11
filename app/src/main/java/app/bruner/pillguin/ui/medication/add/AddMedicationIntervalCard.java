@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication.frequencies;
+package app.bruner.pillguin.ui.medication.add;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,22 +16,23 @@ import java.util.Date;
 import app.bruner.library.models.Schedule;
 import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.pillguin.R;
-import app.bruner.pillguin.databinding.CardCustomBinding;
-import app.bruner.pillguin.databinding.CardIntervalsBinding;
+import app.bruner.pillguin.databinding.CardAddMedicationIntervalsBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
 import app.bruner.pillguin.utils.DateTimePickerUtils;
 
-public class IntervalCard extends Fragment implements ScheduleProvider {
+/**
+ * Fragment to add medication schedules with intervals
+ */
+public class AddMedicationIntervalCard extends Fragment implements ScheduleProvider {
 
-
-    CardIntervalsBinding binding;
+    CardAddMedicationIntervalsBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = CardIntervalsBinding.inflate(inflater, container, false);
+        binding = CardAddMedicationIntervalsBinding.inflate(inflater, container, false);
         init();
         return binding.getRoot();
     }
@@ -41,7 +42,9 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
         setUi();
     }
 
+    // set up the UI
     private void setUi() {
+        // set up spinner for frequency
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.list_interval,
@@ -50,11 +53,13 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.sprFrequency.setAdapter(monthAdapter);
 
+        // set up date pickers to start date
         DateTimePickerUtils.showDateTimePicker(
                 getContext(),
                 binding.txtStartDate
         );
 
+        // set up date pickers to end date
         DateTimePickerUtils.showDateTimePicker(
                 getContext(),
                 binding.txtEndDate
@@ -71,7 +76,7 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
         });
     }
     @Override
-    public Schedule getSchedule() {
+    public Schedule getSchedule() { // contract method to get the schedule
 
         // Start date
         String startDateStr = binding.txtStartDate.getText().toString();
@@ -96,7 +101,7 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
             }
         }
 
-        // Interval
+        // interval
         if(binding.txtInterval.getText().toString().isEmpty()) {
             binding.txtEndDate.setError(getString(R.string.msg_error_interval_required));
             return null;
@@ -120,6 +125,7 @@ public class IntervalCard extends Fragment implements ScheduleProvider {
                 break;
         }
 
+        // initialize days of the week
         ArrayList<Integer> daysOfWeek = new ArrayList<>();
 
         return new Schedule(

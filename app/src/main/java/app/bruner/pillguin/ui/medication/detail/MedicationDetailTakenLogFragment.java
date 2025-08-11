@@ -1,11 +1,10 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.ui.medication.detail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,20 +16,25 @@ import java.util.List;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.viewModels.MedicationViewModel;
-import app.bruner.pillguin.adapters.TakenLogAdapter;
-import app.bruner.pillguin.databinding.FragmentTakenLogBinding;
+import app.bruner.pillguin.adapters.MedicationDetailTakenLogAdapter;
+import app.bruner.pillguin.databinding.FragmentMedicationDetailTakenLogBinding;
 
-public class TakenLogFragment extends Fragment {
+/**
+ * Fragment to display the taken log of a medication
+ */
+public class MedicationDetailTakenLogFragment extends Fragment {
 
     private static final String ARG_MEDICATION = "medication";
     private Medication medication;
 
-    private FragmentTakenLogBinding binding;
-    private TakenLogAdapter adapter;
+    private FragmentMedicationDetailTakenLogBinding binding;
+    private MedicationDetailTakenLogAdapter adapter;
     private MedicationViewModel viewModel;
 
-    public static TakenLogFragment newInstance(Medication medicationParam) {
-        TakenLogFragment fragment = new TakenLogFragment();
+    // factory to create a new instance of this fragment
+    // use factory method to pass the medication object as parameter
+    public static MedicationDetailTakenLogFragment newInstance(Medication medicationParam) {
+        MedicationDetailTakenLogFragment fragment = new MedicationDetailTakenLogFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_MEDICATION, medicationParam);
         fragment.setArguments(args);
@@ -40,15 +44,15 @@ public class TakenLogFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (getArguments() != null) { //get medication from arguments
             medication = getArguments().getSerializable(ARG_MEDICATION, Medication.class);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentTakenLogBinding.inflate(inflater, container, false);
-        init();
+        binding = FragmentMedicationDetailTakenLogBinding.inflate(inflater, container, false);
+        initRecycleView();
         return binding.getRoot();
     }
 
@@ -58,8 +62,8 @@ public class TakenLogFragment extends Fragment {
         binding = null;
     }
 
-    private void init() {
-        adapter = new TakenLogAdapter(new ArrayList<>());
+    private void initRecycleView() {
+        adapter = new MedicationDetailTakenLogAdapter(new ArrayList<>());
         binding.recyclerTakenLog.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerTakenLog.setAdapter(adapter);
 
@@ -67,6 +71,7 @@ public class TakenLogFragment extends Fragment {
 
         List<Date> rawTakenTimes = medication.getSchedule().getWhenTook();
 
+        // check if the list is not null or empty
         if (rawTakenTimes != null && !rawTakenTimes.isEmpty()) {
             adapter.setData(rawTakenTimes);
             binding.recyclerTakenLog.setVisibility(View.VISIBLE);

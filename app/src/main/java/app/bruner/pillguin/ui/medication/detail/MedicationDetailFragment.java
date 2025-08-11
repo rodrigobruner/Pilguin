@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.ui.medication.detail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,28 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import app.bruner.library.models.Medication;
-import app.bruner.pillguin.adapters.MedicationPagerAdapter;
+import app.bruner.pillguin.R;
+import app.bruner.pillguin.adapters.MedicationDetailTabAdapter;
 import app.bruner.pillguin.databinding.FragmentMedicationDetailBinding;
 
+/**
+ * Fragment to show information about a medication
+ */
 public class MedicationDetailFragment extends Fragment {
+
+    private final static String ARG_MEDICATION = "medication";
 
     private FragmentMedicationDetailBinding binding;
     private Medication medication;
 
+    // factory to create a new instance of this fragment
+    // use factory method to pass the medication object as parameter
     public static MedicationDetailFragment newInstance(Medication medicationParam) {
+        // get parameter
         MedicationDetailFragment fragment = new MedicationDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable("medication", medicationParam);
-        fragment.setArguments(args);
+        args.putSerializable(ARG_MEDICATION, medicationParam);
+        fragment.setArguments(args); // set arguments to fragment
         return fragment;
     }
 
@@ -38,23 +47,23 @@ public class MedicationDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            medication = getArguments().getSerializable("medication", Medication.class);
+            medication = getArguments().getSerializable(ARG_MEDICATION, Medication.class);
         }
 
-        MedicationPagerAdapter adapter = new MedicationPagerAdapter(this, medication);
+        MedicationDetailTabAdapter adapter = new MedicationDetailTabAdapter(this, medication);
         binding.viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager,
                 (tab, position) -> {
                     switch (position) {
                         case 0:
-                            tab.setText("Details");
+                            tab.setText(getString(R.string.txt_tab_medicine_details));
                             break;
                         case 1:
-                            tab.setText("Taken Log");
+                            tab.setText(getString(R.string.txt_tab_medicine_taken_log));
                             break;
                         case 2:
-                            tab.setText("Side Effects");
+                            tab.setText(getString(R.string.txt_tab_medicine_reported_side_effects));
                             break;
                     }
                 }).attach();

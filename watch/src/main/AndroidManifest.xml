@@ -52,7 +52,6 @@
             android:name=".ui.MedicationActivity"
             android:exported="false"
             android:theme="@style/AppTheme">
-            <!-- Intent filter for medication details -->
             <intent-filter>
                 <action android:name="app.bruner.watch.MEDICATION_DETAILS" />
                 <category android:name="android.intent.category.DEFAULT" />

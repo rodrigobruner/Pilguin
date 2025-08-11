@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Pillguin</string>
 
+    <!-- main activity -->
+    <string name="txt_welcome">Welcome to Pillguin</string>
+    <string name="btn_continue">Continue</string>
+
     <!-- permissions -->
     <string name="txt_permition_denied">Permission denied: </string>
 
@@ -36,6 +40,7 @@
     <string name="msg_error_end_date_required">End date is required</string>
     <string name="msg_error_time_required">Please select a time</string>
 
+    <string name="txt_days_frequency">Days: %s</string>
     <!-- card_intervals -->
     <string name="txt_card_interval_title">Intervals</string>
     <string-array name="list_interval">
@@ -68,6 +73,13 @@
     <!-- fragment_report -->
     <string name="txt_describe_side_effect"> Describe the side effect</string>
     <string name="txt_submit"> Submit</string>
+    <string name="msg_no_data_available">No medication data available.</string>
+
+    <!-- fragment_medicine_details -->
+    <string name="txt_tab_medicine_details">Details</string>
+    <string name="txt_tab_medicine_taken_log">Taken Log</string>
+    <string name="txt_tab_medicine_reported_side_effects">Side Effects</string>
+    <string name="txt_no_schedule">No schedule set</string>
 
     <!-- fragment_medication_details -->
     <string name="txt_medication_details">Medication Details</string>
@@ -75,6 +87,7 @@
     <string name="txt_dosage"> Dosage:</string>
     <string name="txt_type"> Medication Type</string>
     <string name="txt_schedule"> Schedule:</string>
+    <string name="txt_next_time">Next time:</string>
 
     <!-- fragment_taken_log_details -->
     <string name="txt_medication_log"> Your Medication Log</string>
@@ -82,12 +95,22 @@
     <string name="txt_recent"> Recent Intake Times</string>
     <string name="txt_no_data"> No entries yet. Mark your medicine as taken to see it here.</string>
 
+    <!-- fragment_reported_side_effects -->
+    <string name="txt_reported_side_effects_description">Description: %s</string>
+    <string name="txt_reported_side_effects_date">Date: %s</string>
+    <string name="txt_reported_side_effects_no_side_effects">No side effects reported"</string>
+
     <!-- Notification -->
     <string name="txt_notification_title">Medication Reminder</string>
     <string name="txt_notification_msg">It\'s time to take your medication: %s</string>
     <string name="txt_notification_action_taken">Mark as taken</string>
     <string name="txt_notification_action_see_detail">See datail</string>
 
+    <!-- Medication report -->
+    <string name="doses_taken">Doses Taken: %1$d</string>
+    <string name="expected_doses">Expected Doses: %1$d</string>
+    <string name="missed_doses">Missed Doses: %1$d</string>
+    <string name="adherence_percent">Adherence: %.1f%%</string>
 
 
     <!-- Date picker -->

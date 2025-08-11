@@ -12,7 +12,7 @@ import app.bruner.library.models.Medication;
 import app.bruner.pillguin.receivers.MedicationAlarmReceiver;
 
 /**
- * Utility class to schedule alarms
+ * Util class to schedule alarms
  */
 public class ScheduleAlarmUtils {
 
@@ -34,6 +34,7 @@ public class ScheduleAlarmUtils {
         Intent intent = new Intent(context, MedicationAlarmReceiver.class);
         intent.putExtra("MEDICATION", json);
 
+        // create the pending intent to redirect to receiver
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,
                 (int) medication.getId(),

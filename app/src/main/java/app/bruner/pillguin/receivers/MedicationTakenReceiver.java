@@ -6,36 +6,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
 import com.google.gson.Gson;
-
 import java.util.Date;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.pillguin.R;
 
+/**
+ * A BroadcastReceiver that handle with taking medication on notification
+ */
 public class MedicationTakenReceiver extends BroadcastReceiver {
-
     private static final String EXTRA_MEDICATION = "medication";
-    private static final String CONFIRMATION_CHANNEL_ID = "medication_taken_confirmation";
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // get the medication from the intent
         String medicationJson = intent.getStringExtra(EXTRA_MEDICATION);
 
         if (medicationJson != null) {
+
+            // convert the medication to Medication object
             Medication medication = new Gson().fromJson(medicationJson, Medication.class);
 
-            if (medication != null && medication.getSchedule() != null) {
+            if (medication != null && medication.getSchedule() != null) { // if not null
                 // save the time
                 medication.getSchedule().addWhenTook(new Date());
                 MedicationUtils.update(context, medication);
 
                 // cancel/clean the notification
-                NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(medicationJson.hashCode());
 
                 // show confirmation notification

@@ -15,24 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Date;
 
 import app.bruner.library.models.Medication;
-import app.bruner.library.models.SideEffect;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.R;
-import app.bruner.pillguin.adapters.MedicationAdapter;
-import app.bruner.pillguin.databinding.FragmentMedicationBinding;
+import app.bruner.pillguin.adapters.MedicationListAdapter;
+import app.bruner.pillguin.databinding.FragmentMedicationListBinding;
+import app.bruner.pillguin.ui.medication.detail.MedicationDetailFragment;
+import app.bruner.pillguin.ui.medication.dialogs.ReportSideEffectDialog;
 
-public class MedicationFragment extends Fragment {
-    FragmentMedicationBinding binding;
+/**
+ * Fragment to display a list of medications
+ */
+public class MedicationListFragment extends Fragment {
+    FragmentMedicationListBinding binding;
     MedicationViewModel viewModel;
-    MedicationAdapter adapter;
+    MedicationListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentMedicationBinding.inflate(inflater, container, false);
+        binding = FragmentMedicationListBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
                 .get(MedicationViewModel.class);
         init();
@@ -49,7 +53,7 @@ public class MedicationFragment extends Fragment {
         binding.recyclerViewMedicine.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // new adapter with listeners
-        adapter = new MedicationAdapter(new MedicationAdapter.OnMedicineActionListener() {
+        adapter = new MedicationListAdapter(new MedicationListAdapter.OnMedicineActionListener() {
 
             // buttons to inform that took medication
             @Override

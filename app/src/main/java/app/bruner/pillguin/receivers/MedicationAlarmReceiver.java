@@ -16,38 +16,44 @@ import com.google.gson.Gson;
 import app.bruner.library.models.Medication;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.ui.HomeActivity;
-import app.bruner.pillguin.ui.MainActivity;
 
+
+/**
+ * A BroadcastReceiver that handles with medication alarms
+ */
 public class MedicationAlarmReceiver extends BroadcastReceiver {
 
+    // Constants for medication notification
     private static final String MEDICATION_PARAMETER = "MEDICATION";
     private static final String MEDICATION_CHANNEL_ID = "medication_due_soon";
     private static final String MEDICATION_CHANNEL_NAME = "Medication due soon";
 
+    // Constants for intents
     private static final String EXTRA_MEDICATION = "medication";
     private static final String EXTRA_NAVIGATION = "navigation_target";
     private static final String EXTRA_NAVIGATION_VALUE_DETAILS = "medication_details";
-    private static final String EXTRA_NAVIGATION_VALUE_TOOK = "medication_took_it";
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        // Get the medication from the intent
+        // get the medication from the intent
         String stringMedication = intent.getStringExtra(MEDICATION_PARAMETER);
         Medication medication = new Gson().fromJson(stringMedication, Medication.class);
 
-        if (medication == null) {
+        if (medication == null) { //skip
             return;
         }
 
-        // Check notification permission
+        // check notification permission
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
         // =========== APP
+
+        // create pending intents to show medication detail on app
         PendingIntent appShowMedicationIntent = createPendingIntent(
                 context,
                 medication,
@@ -55,16 +61,20 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
                 HomeActivity.class
         );
 
+        // create pending intent to inform that medication was taken
         PendingIntent appITookMedicationIntent = createMedicationTakenIntent(context, medication);
 
         // =========== WATCH
 
+        // create pending intent to show medication detail on watch
+        // FIXME: not working yet
         PendingIntent watchShowMedicationIntent = createWatchPendingIntent(
                 context,
                 medication,
                 "app.bruner.watch.SHOW_MEDICATION_DETAILS"
         );
 
+        // create pending intent to inform that medication was taken on watch
         PendingIntent watchITookMedicationIntent2 = createMedicationTakenIntent(context, medication);
 
         // set wearable extender for watch
@@ -81,11 +91,11 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
                 ).build());
 
 
-        // Build notification title and message
+        // build notification title and message
         String title = context.getString(R.string.txt_notification_title);
         String message = context.getString(R.string.txt_notification_msg, medication.getName());
 
-        // Create notification channel
+        // create notification channel
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel = new NotificationChannel(
                 MEDICATION_CHANNEL_ID,
@@ -95,14 +105,14 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
 
         // build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MEDICATION_CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(appShowMedicationIntent)
-                .setAutoCancel(true)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(android.R.drawable.ic_dialog_info) // set small icon
+                .setContentTitle(title) //set title
+                .setContentText(message) //set message
+                .setPriority(NotificationCompat.PRIORITY_HIGH) // set priority
+                .setContentIntent(appShowMedicationIntent) // set intent to show medication detail on app
+                .setAutoCancel(true) // close notification when clicked
+                .setCategory(NotificationCompat.CATEGORY_ALARM) // set category for alarm
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // set visibility for public
                 // set buttons for message on app
                 .addAction(android.R.drawable.ic_menu_agenda,
                         context.getString(R.string.txt_notification_action_taken),
@@ -116,6 +126,7 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(stringMedication.hashCode(), builder.build());
     }
 
+    // create a pending intent for app to shows medication details
     private PendingIntent createPendingIntent(Context context, Medication medication, String action, Class className) {
         Intent intent = new Intent(context, className);
         intent.setAction(action);
@@ -133,6 +144,7 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
         );
     }
 
+    // create a pending intent for watch to shows medication details
     private PendingIntent createWatchPendingIntent(Context context, Medication medication, String action) {
         Intent intent = new Intent();
 

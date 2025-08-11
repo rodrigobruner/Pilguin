@@ -1,11 +1,9 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.ui.medication.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,6 @@ import app.bruner.library.models.Medication;
 import app.bruner.library.models.SideEffect;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
-import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.DialogReportSideEffectBinding;
 
 public class ReportSideEffectDialog extends DialogFragment {

@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.ui.medication.add;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,14 +13,15 @@ import androidx.fragment.app.Fragment;
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.Schedule;
 import app.bruner.library.utils.MedicationUtils;
+import app.bruner.pillguin.ui.medication.MedicationListFragment;
 import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.FragmentAddMedicationBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
-import app.bruner.pillguin.ui.medication.frequencies.CustomCard;
-import app.bruner.pillguin.ui.medication.frequencies.EveryXHoursCard;
-import app.bruner.pillguin.ui.medication.frequencies.IntervalCard;
 
+/**
+ * Fragment to add a new medication
+ */
 public class AddMedicationFragment extends Fragment {
 
     FragmentAddMedicationBinding binding;
@@ -40,7 +41,9 @@ public class AddMedicationFragment extends Fragment {
     }
 
 
+    // set up the UI
     private void setUi() {
+
         // medication type
         ArrayAdapter<CharSequence> medicationAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -69,6 +72,7 @@ public class AddMedicationFragment extends Fragment {
     }
 
 
+    // set up frequency type spinner
     private void setUpFrequencyType(){
         binding.spnFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -80,11 +84,11 @@ public class AddMedicationFragment extends Fragment {
                 // decide which fragment to show
                 Fragment fragment;
                 if (selectedFrequency.equals(frequencyTypes[1])) { // intervals
-                    fragment  = new IntervalCard();
+                    fragment  = new AddMedicationIntervalCard();
                 }else if (selectedFrequency.equals(frequencyTypes[2])) { //custom
-                    fragment = new CustomCard();
+                    fragment = new AddMedicationCustomCard();
                 } else { // Every X hours
-                    fragment = new EveryXHoursCard();
+                    fragment = new AddMedicationEveryXHoursCard();
                 }
 
                 // replace fragment on the frame layout
@@ -101,6 +105,7 @@ public class AddMedicationFragment extends Fragment {
     }
 
 
+    // save medication
     private void saveMedication() {
 
         // name
@@ -149,7 +154,7 @@ public class AddMedicationFragment extends Fragment {
         //redirect to MedicineFragment
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_layout, new MedicationFragment())
+                .replace(R.id.frame_layout, new MedicationListFragment())
                 .commit();
     }
 

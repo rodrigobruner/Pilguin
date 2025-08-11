@@ -22,7 +22,7 @@
         android:id="@+id/textNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No medication data available."
+        android:text="@string/msg_no_data_available"
         android:textSize="18sp"
         android:visibility="gone"
         android:textColor="@android:color/darker_gray"

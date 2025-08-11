@@ -29,31 +29,6 @@
             android:layout_marginTop="8dp"
             android:textColor="#555555"
             android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/textExpectedDoses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="#555555"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/textMissedDoses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="#d32f2f"
-        android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/textAdherence"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="#388e3c"
-        android:textSize="18sp" />
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

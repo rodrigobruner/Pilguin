@@ -1,11 +1,9 @@
-package app.bruner.pillguin.ui.medication.frequencies;
+package app.bruner.pillguin.ui.medication.add;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
@@ -18,20 +16,23 @@ import java.util.Date;
 import app.bruner.library.models.Schedule;
 import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.pillguin.R;
-import app.bruner.pillguin.databinding.CardCustomBinding;
+import app.bruner.pillguin.databinding.CardAddMedicationCustomBinding;
 import app.bruner.pillguin.models.ScheduleProvider;
 import app.bruner.pillguin.utils.DateTimePickerUtils;
 
-public class CustomCard extends Fragment implements ScheduleProvider {
+/**
+ * Fragment to add medication schedules with custom days of the week.
+ */
+public class AddMedicationCustomCard extends Fragment implements ScheduleProvider {
 
-    CardCustomBinding binding;
+    CardAddMedicationCustomBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = CardCustomBinding.inflate(inflater, container, false);
+        binding = CardAddMedicationCustomBinding.inflate(inflater, container, false);
         init();
         return binding.getRoot();
     }
@@ -48,7 +49,7 @@ public class CustomCard extends Fragment implements ScheduleProvider {
 
         // set up switch no end date
         binding.swhNoEndDate.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+            if (isChecked) { // if switch is checked, hide end date
                 binding.txtEndDate.setVisibility(View.GONE);
                 binding.txtEndDate.setText("");
             } else {
@@ -59,8 +60,9 @@ public class CustomCard extends Fragment implements ScheduleProvider {
     }
 
 
+    // validate switches, at least one day selected
     private void validadeSwiches() {
-        // when any switch change
+        // criate a listener for all switches
         CompoundButton.OnCheckedChangeListener listener = (buttonView, isChecked) -> {
             boolean anyChecked = false;
             if (binding.swhWeekSunday.isChecked() ||
@@ -72,13 +74,15 @@ public class CustomCard extends Fragment implements ScheduleProvider {
                     binding.swhWeekSaturday.isChecked()) {
                 anyChecked = true;
             }
-            // Show or hide error message
+
+            // show or hide error message
             if (!anyChecked) {
                 binding.txtWeekdaysError.setVisibility(View.VISIBLE);
             } else {
                 binding.txtWeekdaysError.setVisibility(View.GONE);
             }
         };
+
         // Set the listener
         binding.swhWeekSunday.setOnCheckedChangeListener(listener);
         binding.swhWeekModay.setOnCheckedChangeListener(listener);
@@ -92,12 +96,15 @@ public class CustomCard extends Fragment implements ScheduleProvider {
         listener.onCheckedChanged(null, false);
     }
 
+
     @Override
-    public Schedule getSchedule() {
+    public Schedule getSchedule() { // contract method to get the schedule
         try {
+
             // Start date
             String startDateStr = binding.txtStartDate.getText().toString();
             Date startDate = DateTimeParseUtils.parseDateTime(getContext(), startDateStr);
+            // check if is valid
             binding.txtStartDate.setError(null);
             if (startDateStr == null || startDate == null) {
                 binding.txtStartDate.setError(getString(R.string.msg_error_start_date_required));
@@ -106,9 +113,9 @@ public class CustomCard extends Fragment implements ScheduleProvider {
 
             // End date or indefinite
             boolean isIndefinite = binding.swhNoEndDate.isChecked();
-            binding.txtEndDate.setError(null);
+            binding.txtEndDate.setError(null); // reset error
             Date endDate = null;
-            if (!isIndefinite) {
+            if (!isIndefinite) { // if switch is not checked, get end date
                 String endDateStr = binding.txtEndDate.getText().toString();
                 if (!endDateStr.isEmpty()) {
                     endDate = DateTimeParseUtils.parseDateTime(getContext(), endDateStr);
@@ -118,13 +125,14 @@ public class CustomCard extends Fragment implements ScheduleProvider {
                 }
             }
 
-            // Frequency
+            // set frequency
             String frequency = Schedule.FREQUENCY_WEEKLY;
             int interval = 1; // every week
 
             // days of the week
             ArrayList<Integer> daysOfWeek = new ArrayList<>();
 
+            // add days of week
             binding.txtWeekdaysError.setVisibility(View.GONE);
             if (binding.swhWeekSunday.isChecked()){
                 daysOfWeek.add(Schedule.WEEKDAY_SUNDAY);
@@ -153,6 +161,7 @@ public class CustomCard extends Fragment implements ScheduleProvider {
                 frequency = Schedule.FREQUENCY_DAILY;
             }
 
+            // create and return the schedule
             return new Schedule(
                     startDate,
                     endDate,
@@ -162,7 +171,7 @@ public class CustomCard extends Fragment implements ScheduleProvider {
                     daysOfWeek
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // log the error
             return null;
         }
     }

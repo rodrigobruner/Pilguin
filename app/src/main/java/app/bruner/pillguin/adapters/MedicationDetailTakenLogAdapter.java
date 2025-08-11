@@ -13,11 +13,14 @@ import java.util.List;
 
 import app.bruner.library.utils.DateTimeParseUtils;
 
-public class TakenLogAdapter extends RecyclerView.Adapter<TakenLogAdapter.ViewHolder> {
+/**
+ * Adapter to display medication logs in the RecyclerView.
+ */
+public class MedicationDetailTakenLogAdapter extends RecyclerView.Adapter<MedicationDetailTakenLogAdapter.ViewHolder> {
 
     private List<Date> logs;
 
-    public TakenLogAdapter(List<Date> logs) {
+    public MedicationDetailTakenLogAdapter(List<Date> logs) {
         this.logs = logs;
     }
 

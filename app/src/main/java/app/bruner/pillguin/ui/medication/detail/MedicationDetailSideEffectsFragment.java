@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.ui.medication.detail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,17 +19,28 @@ import java.util.Locale;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.SideEffect;
+import app.bruner.library.utils.Constants;
+import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.R;
+import app.bruner.pillguin.databinding.FragmentMedicationDetailSideEffectsBinding;
 
-public class SideEffectsFragment extends Fragment {
+/**
+ * Fragment to display the side effects of a medication
+ */
+public class MedicationDetailSideEffectsFragment extends Fragment {
     private static final String ARG_MEDICATION = "medication";
     private ListView listView;
     private Medication medication;
+
+    private FragmentMedicationDetailSideEffectsBinding binding;
+
     private MedicationViewModel medicationViewModel;
 
-    public static SideEffectsFragment newInstance(Medication medicationParam) {
-        SideEffectsFragment fragment = new SideEffectsFragment();
+    // factory to create a new instance of this fragment
+    // use factory method to pass the medication object as parameter
+    public static MedicationDetailSideEffectsFragment newInstance(Medication medicationParam) {
+        MedicationDetailSideEffectsFragment fragment = new MedicationDetailSideEffectsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_MEDICATION, medicationParam);
         fragment.setArguments(args);
@@ -40,44 +51,51 @@ public class SideEffectsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_side_effects, container, false);
+        binding = FragmentMedicationDetailSideEffectsBinding.inflate(inflater, container, false);
+        init();
+        return binding.getRoot();
+    }
 
-        listView = root.findViewById(R.id.listViewSideEffects);
+    private void init(){
+
         medicationViewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
 
-        if (getArguments() != null) {
+        if (getArguments() != null) { // get medication from arguments
             medication = getArguments().getSerializable(ARG_MEDICATION, Medication.class);
         }
 
         observeMedications();
-
-        return root;
     }
 
     private void observeMedications() {
         loadSideEffects(medication);
     }
 
+    // add a side effects
     private void loadSideEffects(Medication medication) {
         List<String> displayList = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
 
         if (medication != null && medication.getSideEffects() != null) {
             for (SideEffect se : medication.getSideEffects()) {
-                displayList.add(
-                        "Description: " + se.getDescription() + "\n" +
-                                "Date: " + dateFormat.format(se.getDatetimeReported())
-                );
+                // create a string to display the side effect
+                StringBuilder sb = new StringBuilder();
+                sb.append(getString(R.string.txt_reported_side_effects_description, se.getDescription()))
+                        .append("\n")
+                        .append(getString(R.string.txt_reported_side_effects_description,
+                                DateTimeParseUtils.formatDateTime(getContext(), se.getDatetimeReported())));
+
+                displayList.add(sb.toString()); //add the side effect to list
             }
         } else {
-            displayList.add("No side effects reported.");
+            displayList.add(getString(R.string.txt_reported_side_effects_no_side_effects));
         }
 
+        // set up the ListView with the side effects list
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
                 displayList
         );
-        listView.setAdapter(adapter);
+        binding.listViewSideEffects.setAdapter(adapter);
     }
 }

@@ -10,9 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.MedicineTypeIconMapper;
-import app.bruner.pillguin.databinding.CardMedicationBinding;
+import app.bruner.pillguin.databinding.CardMedicationListBinding;
 
-public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
+/**
+ * Adapter to display medication on the medication list.
+ */
+public class MedicationListAdapter extends RecyclerView.Adapter<MedicationListAdapter.MedicationViewHolder> {
 
     private final List<Medication> medications = new ArrayList<>();
 
@@ -27,14 +30,14 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         void onSwipeToDelete(Medication medication);
     }
 
-    public MedicationAdapter(OnMedicineActionListener listener) {
+    public MedicationListAdapter(OnMedicineActionListener listener) {
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public MedicationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CardMedicationBinding binding = CardMedicationBinding.inflate(
+        CardMedicationListBinding binding = CardMedicationListBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
         return new MedicationViewHolder(binding);
     }
@@ -61,9 +64,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
     }
 
     class MedicationViewHolder extends RecyclerView.ViewHolder {
-        private final CardMedicationBinding binding;
+        private final CardMedicationListBinding binding;
 
-        MedicationViewHolder(CardMedicationBinding binding) {
+        MedicationViewHolder(CardMedicationListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -85,14 +88,17 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             int iconResource = MedicineTypeIconMapper.getIconByPosition(typePosition);
             binding.txtMedicinaName.setCompoundDrawablesWithIntrinsicBounds(iconResource, 0, 0, 0);
 
-            // set click listeners
+            // set took medicine listener
             binding.btnTookMedicine.setOnClickListener(v -> {
                 if (listener != null) listener.onTookMedication(medication);
             });
+
+            // set report side effects listener
             binding.btnReportSideEffects.setOnClickListener(v -> {
                 if (listener != null) listener.onReportSideEffects(medication);
             });
 
+            // set click card listener
             binding.getRoot().setOnClickListener(v -> {
                 if (listener != null) listener.onClick(medication);
             });

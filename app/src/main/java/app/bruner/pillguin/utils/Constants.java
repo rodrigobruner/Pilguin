@@ -1,5 +1,8 @@
 package app.bruner.pillguin.utils;
 
+/**
+ * Constants used throughout in the app
+ **/
 public class Constants {
     // date and time formatters
     public static final String DATE_FORMATTER = "%04d-%02d-%02d";
