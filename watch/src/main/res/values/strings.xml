@@ -5,4 +5,7 @@
     <string name="txt_you_took_it">You took your medication.</string>
     <string name="txt_side_effect_reported">Side effect saved</string>
     <string name="txt_permition_denied">Permission denied: </string>
+    <string name="txt_error_speech">Failed to recognize speech</string>
+    <string name="txt_error_valid_side_effect">Please enter a side effect</string>
+    <string name="txt_msg_no_medication">No medication found</string>
 </resources>

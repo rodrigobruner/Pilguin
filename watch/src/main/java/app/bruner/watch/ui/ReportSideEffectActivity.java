@@ -25,6 +25,9 @@ import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityReportSideEffectBinding;
 import utils.ConfirmUtils;
 
+/**
+ * Activity to report side effect
+ */
 public class ReportSideEffectActivity extends AppCompatActivity implements View.OnClickListener {
 
     ActivityReportSideEffectBinding binding;
@@ -43,41 +46,47 @@ public class ReportSideEffectActivity extends AppCompatActivity implements View.
     }
 
     private void init() {
+        // get medication from intent
         medication = getIntent().getSerializableExtra(MEDICATION_PARAM, Medication.class);
         binding.btnSave.setOnClickListener(this);
         setSideEffect();
     }
 
-    private void setSideEffect() {
+    private void setSideEffect() { // set side effect speech input
         Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         startActivityForResult(voiceIntent, SPEECH_REQUEST_CODE);
     }
 
+    // get speech input result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) { // if recognized speech
             if (data != null) {
+                // get first result
                 String sideEffect = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
                 binding.txtSideEffect.setText(sideEffect);
             }
         } else {
-            Snackbar.make(binding.getRoot(), "Failed to recognize speech", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(binding.getRoot(), getString(R.string.txt_error_speech), Snackbar.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_save) {
+            // get side effect text
             String sideEffect = binding.txtSideEffect.getText().toString();
-            if (sideEffect.isEmpty()) {
-                Snackbar.make(binding.getRoot(), "Please enter a side effect", Snackbar.LENGTH_LONG).show();
+            if (sideEffect.isEmpty()) { // if side effect is empty
+                Snackbar.make(binding.getRoot(), getString(R.string.txt_error_valid_side_effect), Snackbar.LENGTH_LONG).show();
                 return;
             }
 
+            // add new side effect
             medication.getSideEffects().add(new SideEffect(sideEffect, new Date()));
-            MedicationUtils.update(getBaseContext(), medication);
+            MedicationUtils.update(getBaseContext(), medication); // update medication in database
+            //show confirmation message
             ConfirmUtils.showSavedMessage(getString(R.string.txt_side_effect_reported), this);
 
             // delay for 1 second to show confirmation message

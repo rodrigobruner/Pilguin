@@ -13,7 +13,18 @@ import app.bruner.library.utils.MedicationUtils;
  */
 public class MedicationRepository {
 
+    private static MedicationRepository instance; // singleton
+
     private final MutableLiveData<ArrayList<Medication>> medicationsLiveData = new MutableLiveData<>();
+
+    private MedicationRepository() {}
+
+    public static synchronized MedicationRepository getInstance() {
+        if (instance == null) {
+            instance = new MedicationRepository();
+        }
+        return instance;
+    }
 
     public LiveData<ArrayList<Medication>> getMedications(Context context) {
         medicationsLiveData.setValue(MedicationUtils.getAll(context));

@@ -18,7 +18,7 @@ public class MedicationViewModel extends AndroidViewModel {
 
     public MedicationViewModel(@NonNull Application application) {
         super(application);
-        repository = new MedicationRepository();
+        repository = MedicationRepository.getInstance();
         medications = repository.getMedications(application.getApplicationContext());
     }
 
@@ -28,9 +28,14 @@ public class MedicationViewModel extends AndroidViewModel {
 
     public void deleteMedication(long medicationId) {
         repository.deleteMedication(getApplication().getApplicationContext(), medicationId);
+
     }
 
     public void getNextMedications() {
         repository.getNextMedications(getApplication().getApplicationContext());
+    }
+
+    public void addMedication(Medication medication) {
+        repository.addMedication(getApplication().getApplicationContext(), medication);
     }
 }

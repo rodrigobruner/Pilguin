@@ -21,6 +21,9 @@ import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMedicationBinding;
 import utils.ConfirmUtils;
 
+/**
+ * Activity to show details of a medication
+ */
 public class MedicationActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String MEDICATION_PARAM = "medication_obj";
@@ -40,6 +43,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void init() {
+        // initialize view model
         viewModel = new MedicationViewModel(getApplication());
         getMedication();
         setupViews();
@@ -48,12 +52,14 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void getMedication(){
+        //get medication from intent
         medication = getIntent().getSerializableExtra(MEDICATION_PARAM, Medication.class);
-        if(medication == null) {
+        if(medication == null) { // if result is null
+            // get first medication from database
             viewModel.getMedications().observe(this, medications -> {
                 if (medications != null && !medications.isEmpty()) {
                     medication = medications.get(0); // first in the list
-                    setupViews();
+                    setupViews(); // setup views
                 }
             });
             return;
@@ -61,25 +67,37 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         binding.txtNextMedication.setVisibility(View.GONE);
     }
 
-
+    // setup ui
     private void setupViews() {
         if (medication != null) {
+
+            // set visibility of ui
+            binding.txtNextMedication.setText(getString(R.string.txt_next_medication));
+            binding.linLayContent.setVisibility(View.VISIBLE);
+            binding.buttons.setVisibility(View.VISIBLE);
+
+            // set medication data
             binding.txtName.setText(medication.getName());
             binding.txtDosage.setText(medication.getDosage());
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
-            if (medication.getSchedule() != null) {
+            if (medication.getSchedule() != null) { // covert date to string
                 Date nextTime = medication.getSchedule().getNextTime();
                 String nextTimeString = DateTimeParseUtils.formatDateTime(getBaseContext(), nextTime);
                 binding.txtTime.setText(nextTimeString);
             } else {
                 binding.txtTime.setText("");
             }
+        } else {
+            // set visibility of ui
+            binding.linLayContent.setVisibility(View.GONE);
+            binding.buttons.setVisibility(View.GONE);
+            binding.txtNextMedication.setText(getString(R.string.txt_msg_no_medication));
         }
     }
 
     @Override
-    public void onClick(View v) {
-        if(v.getId() == binding.btnTookThisMedication.getId()) {
+    public void onClick(View v) { // deal with button clicks
+        if(v.getId() == binding.btnTookThisMedication.getId()) { // took this medication
             medication.getSchedule().addWhenTook(new Date());
             MedicationUtils.update(this, medication);
             ConfirmUtils.showSavedMessage(getString(R.string.txt_you_took_it), this);
@@ -92,7 +110,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             }, 1000);
         }
 
-        if(v.getId() == binding.btnReportSideEffects.getId()) {
+        if(v.getId() == binding.btnReportSideEffects.getId()) { // report side effects
             Intent intent = new Intent(getBaseContext(), ReportSideEffectActivity.class);
             intent.putExtra(MedicationActivity.MEDICATION_PARAM, medication);
             startActivity(intent);

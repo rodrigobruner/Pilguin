@@ -38,10 +38,19 @@ public class ReportFragment extends Fragment {
         init();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
 
     private void init(){
         // get medications from viewModel
         viewModel.getMedications().observe(getViewLifecycleOwner(), medications -> {
+            binding.recyclerMedicationReports.setAdapter(
+                    new MedicationReportAdapter(medications, requireContext())
+            );
             if (medications == null || medications.isEmpty()) { // if is empty
                 binding.recyclerMedicationReports.setVisibility(View.GONE);
                 binding.textNoData.setVisibility(View.VISIBLE);
@@ -49,9 +58,7 @@ public class ReportFragment extends Fragment {
                 //set up recycler view
                 binding.recyclerMedicationReports.setVisibility(View.VISIBLE);
                 binding.textNoData.setVisibility(View.GONE);
-                binding.recyclerMedicationReports.setAdapter(
-                        new MedicationReportAdapter(medications, requireContext())
-                );
+
             }
         });
     }

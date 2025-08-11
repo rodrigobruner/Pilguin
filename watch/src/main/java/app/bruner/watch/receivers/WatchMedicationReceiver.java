@@ -10,6 +10,10 @@ import com.google.gson.Gson;
 import app.bruner.library.models.Medication;
 import app.bruner.watch.ui.MedicationActivity;
 
+/**
+ * Receiver to handle medication notifications on the watch
+ * TODO: Not work properly yet
+ */
 public class WatchMedicationReceiver extends BroadcastReceiver {
 
     private static final String TAG = "WatchMedicationReceiver";

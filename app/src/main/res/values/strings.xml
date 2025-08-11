@@ -107,6 +107,7 @@
     <string name="txt_notification_action_see_detail">See datail</string>
 
     <!-- Medication report -->
+    <string name="txt_medication_report">Medication Report</string>
     <string name="doses_taken">Doses Taken: %1$d</string>
     <string name="expected_doses">Expected Doses: %1$d</string>
     <string name="missed_doses">Missed Doses: %1$d</string>

@@ -21,6 +21,9 @@ import app.bruner.watch.R;
 import app.bruner.watch.databinding.ActivityMainBinding;
 import utils.Constants;
 
+/**
+ * Main activity of the app
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -42,27 +45,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init(){
+        // set click listeners
         binding.btnDailyMedication.setOnClickListener(this);
         binding.btnNextMedication.setOnClickListener(this);
+
+        // strat the medicationSyncService
         Intent serviceIntent = new Intent(this, MedicationSyncService.class);
         startService(serviceIntent);
         requestPermitions();
-
-//        testWearConnection();
-
-        // ADICIONAR: Forçar sync manual para teste
-//        Log.d("MainActivity", "Forcing manual sync from watch");
-//        DataSyncUtils.sendUpdate(this);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v) { // deal with button clicks
         if (v.getId() == R.id.btn_daily_medication) {
             startActivity(new Intent(this, MedicationListActivity.class));
         } else if (v.getId() == R.id.btn_next_medication) {
             startActivity(new Intent(this, MedicationActivity.class));
         }
     }
+
+    // ==============resquest permissions
 
     public void requestPermitions() {
         // request permissions for recording audio, posting notifications, and scheduling alarms
@@ -90,19 +92,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
-    // test conection with the phone
-//    private void testWearConnection() {
-//
-//        Wearable.getNodeClient(this).getConnectedNodes()
-//                .addOnSuccessListener(nodes -> {
-//                    Log.d("MainActivity", "Connected nodes: " + nodes.size());
-//                    for (com.google.android.gms.wearable.Node node : nodes) {
-//                        Log.d("MainActivity", "Node: " + node.getDisplayName() + " - " + node.getId());
-//                    }
-//                })
-//                .addOnFailureListener(e -> {
-//                    Log.e("MainActivity", "Failed to get connected nodes", e);
-//                });
-//    }
 }

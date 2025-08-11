@@ -17,6 +17,9 @@ import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.watch.databinding.MedicationRowBinding;
 import app.bruner.watch.ui.MedicationActivity;
 
+/**
+ * RecyclerView adapter to medications
+ */
 public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Medication> medications = new ArrayList<>();
@@ -68,7 +71,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
 
+            // set click listener to open MedicationActivity
             itemView.setOnClickListener(v -> {
+                // redirect to MedicationActivity with medication as parameter
                 Intent intent = new Intent(context, MedicationActivity.class);
                 intent.putExtra(MedicationActivity.MEDICATION_PARAM, medication);
                 if (!(context instanceof Activity)) {

@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/medicineFragment"
     android:background="@color/gray_100"
     android:layout_width="match_parent"
@@ -12,9 +13,24 @@
         android:layout_height="wrap_content"
         android:text="@string/txt_medicine_list" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_medicine"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_medicine"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/textNoData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/msg_no_data_available"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:textColor="@android:color/darker_gray"/>
+    </FrameLayout>
 </LinearLayout>

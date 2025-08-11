@@ -117,6 +117,13 @@ public class MedicationListFragment extends Fragment {
     private void observeMedications() {
         viewModel.getMedications().observe(getViewLifecycleOwner(), medications -> {
             adapter.setMedications(medications);
+            if (medications != null && !medications.isEmpty()) {
+                binding.recyclerViewMedicine.setVisibility(View.VISIBLE);
+                binding.textNoData.setVisibility(View.GONE);
+            } else {
+                binding.recyclerViewMedicine.setVisibility(View.GONE);
+                binding.textNoData.setVisibility(View.VISIBLE);
+            }
         });
     }
 }

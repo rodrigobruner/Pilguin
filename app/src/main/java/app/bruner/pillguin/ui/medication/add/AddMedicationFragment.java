@@ -9,10 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.Schedule;
 import app.bruner.library.utils.MedicationUtils;
+import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.ui.medication.MedicationListFragment;
 import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 import app.bruner.pillguin.R;
@@ -23,6 +25,8 @@ import app.bruner.pillguin.models.ScheduleProvider;
  * Fragment to add a new medication
  */
 public class AddMedicationFragment extends Fragment {
+
+    MedicationViewModel viewModel;
 
     FragmentAddMedicationBinding binding;
     @Override
@@ -36,6 +40,7 @@ public class AddMedicationFragment extends Fragment {
     }
 
     private void init() {
+        viewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
         setUi();
         setUpFrequencyType();
     }
@@ -144,7 +149,8 @@ public class AddMedicationFragment extends Fragment {
         Medication medication = new Medication(id, name, dosage, type, schedule);
 
         // sava medication
-        MedicationUtils.add(getContext(), medication);
+        viewModel.addMedication(medication);
+//        MedicationUtils.add(getContext(), medication);
 
         ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication);
 

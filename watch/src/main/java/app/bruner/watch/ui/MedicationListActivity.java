@@ -1,6 +1,7 @@
 package app.bruner.watch.ui;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.wear.widget.WearableRecyclerView;
@@ -13,6 +14,9 @@ import app.bruner.watch.adapter.MedicationAdapter;
 import app.bruner.watch.databinding.ActivityMedicationListBinding;
 import app.bruner.library.viewModels.MedicationViewModel;
 
+/**
+ * Activity to show medication list
+ */
 public class MedicationListActivity extends AppCompatActivity {
 
     private ActivityMedicationListBinding binding;
@@ -32,11 +36,13 @@ public class MedicationListActivity extends AppCompatActivity {
     }
 
     private void init() {
+        // initialize view model
         viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
         setupRecyclerView();
         observeMedications();
     }
 
+    // set up the recycler view
     private void setupRecyclerView() {
         binding.rcvMedications.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
         adapter = new MedicationAdapter(this);
@@ -44,9 +50,18 @@ public class MedicationListActivity extends AppCompatActivity {
         binding.rcvMedications.setEdgeItemsCenteringEnabled(true);
     }
 
+    // observe medications from view model
     private void observeMedications() {
         viewModel.getMedications().observe(this, medications -> {
             adapter.setMedications(medications);
+            if(medications != null && !medications.isEmpty()) {
+                binding.rcvMedications.setVisibility(View.VISIBLE);
+                binding.txtNoMedication.setVisibility(View.GONE);
+            } else {
+                // Show a message or handle empty list case
+                binding.rcvMedications.setVisibility(View.GONE);
+                binding.txtNoMedication.setVisibility(View.VISIBLE);
+            }
         });
     }
 }
