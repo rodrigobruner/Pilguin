@@ -56,9 +56,9 @@ public class DataSyncUtils {
         // send the data
         Task<DataItem> putDataTask = Wearable.getDataClient(context).putDataItem(putDataRequest);
         putDataTask.addOnSuccessListener(dataItem -> {
-//            Log.d(TAG, "sent from " + source);
+            Log.d("Sync service", "sent from " + source);
         }).addOnFailureListener(e -> {
-//            Log.e(TAG, "FAIL data from " + source, e);
+            Log.e("Sync service", "FAIL data from " + source, e);
         });
     }
 

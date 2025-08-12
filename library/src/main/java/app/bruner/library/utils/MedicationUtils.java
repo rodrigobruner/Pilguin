@@ -2,6 +2,7 @@ package app.bruner.library.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class MedicationUtils {
         editor.apply();
 
         if (shouldSync) { // sync the data if needed
+            Log.d("Sync service", "MedicationUtils: send update!");
             DataSyncUtils.sendUpdate(context); // send update to the other device
         }
     }

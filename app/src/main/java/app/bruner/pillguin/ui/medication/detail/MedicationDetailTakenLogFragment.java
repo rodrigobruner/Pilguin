@@ -52,14 +52,28 @@ public class MedicationDetailTakenLogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMedicationDetailTakenLogBinding.inflate(inflater, container, false);
-        initRecycleView();
+        init();
         return binding.getRoot();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
+    private void init() {
+        viewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
+        observeMedicationById(medication.getId());
+    }
+
+    private void observeMedicationById(long medicationId) {
+        viewModel.getMedicationById(medicationId).observe(getViewLifecycleOwner(), medication -> {
+            if (medication != null) {
+                this.medication = medication;
+                initRecycleView();
+            }
+        });
     }
 
     private void initRecycleView() {

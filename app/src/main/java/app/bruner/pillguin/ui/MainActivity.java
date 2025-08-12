@@ -1,6 +1,7 @@
 package app.bruner.pillguin.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.Wearable;
 
 import app.bruner.library.services.MedicationSyncService;
 import app.bruner.pillguin.R;
@@ -38,15 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init(){
         binding.btnContinue.setOnClickListener(this);
-        // start MedicationSyncService
-        Intent serviceIntent = new Intent(this, MedicationSyncService.class);
-        startService(serviceIntent);
+
+        startSyncService();
 
         //TODO: app onboarding
 
         // redirect to HomeActivity
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+
     }
 
     // set up button to continue
@@ -57,4 +61,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
     }
+
+
+    // =================== sync service
+
+    private void startSyncService() {
+        // start the sync service
+        Intent serviceIntent = new Intent(this, MedicationSyncService.class);
+        startService(serviceIntent);
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        Log.d("Sync service", "APP: Sync service started");
+        checkWearableConnection();
+    }
+
+
+    // service connection to observe sync service
+    private android.content.ServiceConnection serviceConnection = new android.content.ServiceConnection() {
+        @Override
+        public void onServiceConnected(android.content.ComponentName name, android.os.IBinder service) {
+            Log.d("Sync service", "APP: Sync service connected");
+        }
+
+        @Override
+        public void onServiceDisconnected(android.content.ComponentName name) {
+            Log.d("Sync service", "APP: Sync service disconnected");
+        }
+    };
+
+    // check if the wearable is connected
+    private void checkWearableConnection() {
+        Wearable.getNodeClient(this).getConnectedNodes()
+                .addOnSuccessListener(nodes -> {
+                    Log.d("Sync service", "WATCH: Connected nodes: " + nodes.size());
+                    for (Node node : nodes) {
+                        Log.d("Sync service", "WATCH: Node: " + node.getDisplayName());
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Sync service", "WATCH: Failed to get connected nodes", e);
+                });
+    }
+
+
 }

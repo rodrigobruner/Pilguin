@@ -75,27 +75,25 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
     private void loadSideEffects(Medication medication) {
         List<String> displayList = new ArrayList<>();
 
-        if (medication != null && medication.getSideEffects() != null) {
+        if (medication != null && medication.getSideEffects() != null && !medication.getSideEffects().isEmpty()) {
             for (SideEffect se : medication.getSideEffects()) {
-                // create a string to display the side effect
+
                 StringBuilder sb = new StringBuilder();
                 sb.append(getString(R.string.txt_reported_side_effects_description, se.getDescription()))
                         .append("\n")
-                        .append(getString(R.string.txt_reported_side_effects_description,
+                        .append(getString(R.string.txt_reported_side_effects_date,
                                 DateTimeParseUtils.formatDateTime(getContext(), se.getDatetimeReported())));
 
-                displayList.add(sb.toString()); //add the side effect to list
+                displayList.add(sb.toString());
             }
         } else {
             displayList.add(getString(R.string.txt_reported_side_effects_no_side_effects));
         }
 
-        // set up the ListView with the side effects list
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        binding.listViewSideEffects.setAdapter(new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
                 displayList
-        );
-        binding.listViewSideEffects.setAdapter(adapter);
+        ));
     }
 }
