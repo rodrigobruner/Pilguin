@@ -10,4 +10,5 @@
     <string name="txt_msg_no_medication">No medication found</string>
     <string name="txt_latest">Latest</string>
     <string name="txt_never_taken">Not taken yet</string>
+    <string name="txt_side_effect">Side effect</string>
 </resources>
