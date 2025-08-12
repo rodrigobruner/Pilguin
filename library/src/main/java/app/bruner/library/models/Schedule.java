@@ -62,7 +62,7 @@ public class Schedule implements Serializable {
         this.isExpired = false; // not expired by default
 
         this.whenTook = new ArrayList<>(); // init empty
-        this.whenTook.add(startDate); // add start date as first taken
+//        this.whenTook.add(startDate); // add start date as first taken
         setNextTime(); // calculate the next time
     }
 
@@ -196,11 +196,17 @@ public class Schedule implements Serializable {
         // check if null and init
         if (this.whenTook == null) {
             this.whenTook = new ArrayList<>();
-            return;
         }
 
-        // get last time
-        Date lastTaken = whenTook.get(whenTook.size() - 1);
+        // get last time or initial time
+        Date lastTaken;
+        if (whenTook.isEmpty()) { // if never taken, start time is the next time
+            this.nextTime = startDate;
+            checkIfExpired();
+            return;
+        } else {
+            lastTaken = whenTook.get(whenTook.size() - 1);
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(lastTaken);
 

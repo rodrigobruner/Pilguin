@@ -95,8 +95,14 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 binding.imgTime.setVisibility(View.GONE);
             }
 
-            binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_green));
-            binding.txtTimeLastTaken.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getLastTaken()));
+            if(medication.getSchedule().getLastTaken() == null) {
+                binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.gray_400));
+                binding.txtTimeLastTaken.setText(context.getString(R.string.txt_never_taken));
+            } else {
+                binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_green));
+                binding.txtTimeLastTaken.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getLastTaken()));
+            }
+
 
             // set click listener to open MedicationActivity
             itemView.setOnClickListener(v -> {

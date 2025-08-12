@@ -40,6 +40,12 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
         // initialize view model
         viewModel = new MedicationViewModel(getApplication());
@@ -61,8 +67,19 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
                 }
             });
             return;
+        } else {
+            observeMedicationById(medication.getId());
         }
         binding.txtNextMedication.setVisibility(View.GONE);
+    }
+
+    private void observeMedicationById(long medicationId) {
+        viewModel.getMedicationById(medicationId).observe(this, medication -> {
+            if (medication != null) {
+                this.medication = medication;
+                setupViews();
+            }
+        });
     }
 
     // setup ui
@@ -97,11 +114,13 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
                 binding.txtTime.setText("");
             }
 
-            binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_green));
-            binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastTaken()));
-
-
-
+            if(medication.getSchedule().getLastTaken() == null) {
+                binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.gray_400));
+                binding.txtLastTime.setText(getBaseContext().getString(R.string.txt_never_taken));
+            } else {
+                binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_green));
+                binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastTaken()));
+            }
         } else {
             // set visibility of ui
             binding.linLayContent.setVisibility(View.GONE);

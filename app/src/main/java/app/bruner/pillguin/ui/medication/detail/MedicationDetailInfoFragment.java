@@ -32,7 +32,7 @@ public class MedicationDetailInfoFragment extends Fragment implements View.OnCli
     private static final String ARG_MEDICATION = "medication";
     private FragmentMedicationDetailInfoBinding binding;
     private Medication medication;
-    private MedicationViewModel medicationViewModel;
+    private MedicationViewModel viewModel;
 
     // factory to create a new instance of this fragment
     // use factory method to pass the medication object as parameter
@@ -60,13 +60,28 @@ public class MedicationDetailInfoFragment extends Fragment implements View.OnCli
         init();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init(){
         if (getArguments() != null) {
             medication = getArguments().getSerializable(ARG_MEDICATION, Medication.class);
         }
 
-        medicationViewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
-        updateUI();
+        viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
+        observeMedicationById(medication.getId());
+    }
+
+    private void observeMedicationById(long medicationId) {
+        viewModel.getMedicationById(medicationId).observe(getViewLifecycleOwner(), medication -> {
+            if (medication != null) {
+                this.medication = medication;
+                updateUI();
+            }
+        });
     }
 
     private void updateUI() {

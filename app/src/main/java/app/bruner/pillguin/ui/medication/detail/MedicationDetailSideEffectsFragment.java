@@ -12,14 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.models.SideEffect;
-import app.bruner.library.utils.Constants;
 import app.bruner.library.utils.DateTimeParseUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.R;
@@ -35,7 +32,7 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
 
     private FragmentMedicationDetailSideEffectsBinding binding;
 
-    private MedicationViewModel medicationViewModel;
+    private MedicationViewModel viewModel;
 
     // factory to create a new instance of this fragment
     // use factory method to pass the medication object as parameter
@@ -56,23 +53,41 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init(){
 
-        medicationViewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
 
         if (getArguments() != null) { // get medication from arguments
             medication = getArguments().getSerializable(ARG_MEDICATION, Medication.class);
         }
 
-        observeMedications();
+        observeMedicationById(medication.getId());
     }
 
-    private void observeMedications() {
-        loadSideEffects(medication);
+    private void observeMedicationById(long medicationId) {
+        viewModel.getMedicationById(medicationId).observe(getViewLifecycleOwner(), medication -> {
+            if (medication != null) {
+                this.medication = medication;
+                loadSideEffects(); // Sempre recarrega quando medication muda
+            } else {
+                // Caso medication seja null, limpa a lista
+                binding.listViewSideEffects.setAdapter(new ArrayAdapter<>(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        new ArrayList<>()
+                ));
+            }
+        });
     }
 
     // add a side effects
-    private void loadSideEffects(Medication medication) {
+    private void loadSideEffects() {
         List<String> displayList = new ArrayList<>();
 
         if (medication != null && medication.getSideEffects() != null && !medication.getSideEffects().isEmpty()) {
