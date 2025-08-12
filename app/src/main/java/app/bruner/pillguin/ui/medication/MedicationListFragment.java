@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import app.bruner.library.models.Medication;
@@ -45,9 +48,38 @@ public class MedicationListFragment extends Fragment {
     }
 
     private void init() {
+        setSpinner();
         setRecyclerView();
-        observeMedications();
     }
+
+
+    private void setSpinner() {
+        // Create adapter using the string array from resources
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.list_filter_options,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // set spinner adapter
+        binding.sprFilter.setAdapter(adapter);
+
+        // set listener to spinner
+        binding.sprFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedFilter = (String) parent.getItemAtPosition(position);
+                applyFilter(selectedFilter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
 
     private void setRecyclerView() {
         // set layout manager
@@ -116,16 +148,38 @@ public class MedicationListFragment extends Fragment {
     }
 
     // Observe medications changes on ViewModel
-    private void observeMedications() {
-        viewModel.getMedications().observe(getViewLifecycleOwner(), medications -> {
-            adapter.setMedications(medications);
-            if (medications != null && !medications.isEmpty()) {
-                binding.recyclerViewMedicine.setVisibility(View.VISIBLE);
-                binding.textNoData.setVisibility(View.GONE);
-            } else {
-                binding.recyclerViewMedicine.setVisibility(View.GONE);
-                binding.textNoData.setVisibility(View.VISIBLE);
-            }
-        });
+    private void applyFilter(String filter) {
+
+
+        switch (filter) {
+            case "Taken":
+                viewModel.getLatestMedication(getContext()).observe(getViewLifecycleOwner(), medications -> {
+                    adapter.setMedications(medications);
+                    hidenShowUI(medications);
+                });
+                break;
+            case "Today":
+                viewModel.getTodayMedications().observe(getViewLifecycleOwner(), medications -> {
+                    adapter.setMedications(medications);
+                    hidenShowUI(medications);
+                });
+                break;
+            default:
+                viewModel.getMedications().observe(getViewLifecycleOwner(), medications -> {
+                    adapter.setMedications(medications);
+                    hidenShowUI(medications);
+                });
+        }
+
+    }
+
+    private void hidenShowUI(ArrayList<Medication> medications){
+        if (medications != null && !medications.isEmpty()) {
+            binding.recyclerViewMedicine.setVisibility(View.VISIBLE);
+            binding.textNoData.setVisibility(View.GONE);
+        } else {
+            binding.recyclerViewMedicine.setVisibility(View.GONE);
+            binding.textNoData.setVisibility(View.VISIBLE);
+        }
     }
 }

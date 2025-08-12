@@ -68,7 +68,12 @@
     <string name="txt_medicine_list">Medicine List</string>
     <string name="txt_took_it">I took it</string>
     <string name="txt_report_side_effects">Report side effects</string>
-
+    <string name="txt_filters">Filters</string>
+    <string-array name="list_filter_options">
+        <item>All</item>
+        <item>Today</item>
+        <item>Taken</item>
+    </string-array>
 
     <!-- fragment_report -->
     <string name="txt_describe_side_effect"> Describe the side effect</string>
