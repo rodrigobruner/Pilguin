@@ -143,7 +143,7 @@ public class MedicationRepository {
             boolean isScheduledToday = false;
             boolean wasTakenToday = false;
 
-            // Check if scheduled for today
+            // check if scheduled for today
             Date nextTime = schedule.getNextTime();
             if (nextTime != null &&
                     nextTime.compareTo(todayStart) >= 0 &&
@@ -151,7 +151,7 @@ public class MedicationRepository {
                 isScheduledToday = true;
             }
 
-            // Check if taken today
+            // check if taken today
             ArrayList<Date> whenTook = schedule.getWhenTook();
             if (whenTook != null && !whenTook.isEmpty()) {
                 Date lastTaken = whenTook.get(whenTook.size() - 1);
@@ -162,7 +162,7 @@ public class MedicationRepository {
                 }
             }
 
-            // Add if scheduled today OR taken today
+            // add if one of the conditions is true
             if (isScheduledToday || wasTakenToday) {
                 todayMedications.add(med);
             }
@@ -185,30 +185,35 @@ public class MedicationRepository {
         return data;
     }
 
-    // get the latest medication based on the last time it was taken
+    // get the latest medication
     public LiveData<ArrayList<Medication>> getLatestMedication(Context context) {
         ArrayList<Medication> all = MedicationUtils.getAll(context);
-        MutableLiveData<ArrayList<Medication>> data = new MutableLiveData<>();
-
-        Medication latestMedication = null;
-        Date latestDate = null;
+        ArrayList<Medication> sortedMedications = new ArrayList<>();
 
         for (Medication med : all) {
             if (isValidLastTaken(med)) {
                 Date lastTaken = getLastTakenDate(med);
-                if (lastTaken != null && (latestDate == null || lastTaken.after(latestDate))) {
-                    latestDate = lastTaken;
-                    latestMedication = med;
+
+                // Find the correct position to insert (ordered by most recent first)
+                int insertPosition = 0;
+                for (int i = 0; i < sortedMedications.size(); i++) {
+                    Date existingLastTaken = getLastTakenDate(sortedMedications.get(i));
+
+                    // If current medication is older, insert here
+                    if (lastTaken.before(existingLastTaken)) {
+                        insertPosition = i + 1;
+                    } else {
+                        // Current medication is newer, insert at current position
+                        break;
+                    }
                 }
+
+                sortedMedications.add(insertPosition, med);
             }
         }
 
-        ArrayList<Medication> result = new ArrayList<>();
-        if (latestMedication != null) {
-            result.add(latestMedication);
-        }
-
-        data.setValue(result);
+        MutableLiveData<ArrayList<Medication>> data = new MutableLiveData<>();
+        data.setValue(sortedMedications);
         return data;
     }
 
