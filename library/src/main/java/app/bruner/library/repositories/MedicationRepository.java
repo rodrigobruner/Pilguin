@@ -120,32 +120,68 @@ public class MedicationRepository {
         return medication.getSchedule().getNextTime();
     }
     // get medications scheduled for today
-    public LiveData<ArrayList<Medication>> getMedicationsForToday(Context context) {
+    public LiveData<ArrayList<Medication>> getTodayMedications(Context context) {
         ArrayList<Medication> all = MedicationUtils.getAll(context);
-        ArrayList<Medication> todayList = new ArrayList<>();
+        ArrayList<Medication> todayMedications = new ArrayList<>();
+
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
+        Date todayStart = today.getTime();
+
+        today.add(Calendar.DAY_OF_MONTH, 1);
+        Date tomorrowStart = today.getTime();
 
         for (Medication med : all) {
-            Schedule schedule = med.getSchedule();
-            if (schedule != null && schedule.getNextTime() != null) {
-                Calendar next = Calendar.getInstance();
-                next.setTime(schedule.getNextTime());
-                next.set(Calendar.HOUR_OF_DAY, 0);
-                next.set(Calendar.MINUTE, 0);
-                next.set(Calendar.SECOND, 0);
-                next.set(Calendar.MILLISECOND, 0);
+            if (med == null || med.getSchedule() == null) {
+                continue;
+            }
 
-                if (today.getTime().equals(next.getTime())) {
-                    todayList.add(med);
+            Schedule schedule = med.getSchedule();
+            boolean isScheduledToday = false;
+            boolean wasTakenToday = false;
+
+            // Check if scheduled for today
+            Date nextTime = schedule.getNextTime();
+            if (nextTime != null &&
+                    nextTime.compareTo(todayStart) >= 0 &&
+                    nextTime.compareTo(tomorrowStart) < 0) {
+                isScheduledToday = true;
+            }
+
+            // Check if taken today
+            ArrayList<Date> whenTook = schedule.getWhenTook();
+            if (whenTook != null && !whenTook.isEmpty()) {
+                Date lastTaken = whenTook.get(whenTook.size() - 1);
+                if (lastTaken != null &&
+                        lastTaken.compareTo(todayStart) >= 0 &&
+                        lastTaken.compareTo(tomorrowStart) < 0) {
+                    wasTakenToday = true;
                 }
             }
+
+            // Add if scheduled today OR taken today
+            if (isScheduledToday || wasTakenToday) {
+                todayMedications.add(med);
+            }
         }
+
+        // Sort by next time (nulls last)
+        todayMedications.sort((med1, med2) -> {
+            Date nextTime1 = med1.getSchedule().getNextTime();
+            Date nextTime2 = med2.getSchedule().getNextTime();
+
+            if (nextTime1 == null && nextTime2 == null) return 0;
+            if (nextTime1 == null) return 1;
+            if (nextTime2 == null) return -1;
+
+            return nextTime1.compareTo(nextTime2);
+        });
+
         MutableLiveData<ArrayList<Medication>> data = new MutableLiveData<>();
-        data.setValue(todayList);
+        data.setValue(todayMedications);
         return data;
     }
 

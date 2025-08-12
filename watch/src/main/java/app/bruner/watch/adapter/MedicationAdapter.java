@@ -4,16 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.DateTimeParseUtils;
+import app.bruner.library.utils.MedicineTypeIconMapper;
+import app.bruner.watch.R;
 import app.bruner.watch.databinding.MedicationRowBinding;
 import app.bruner.watch.ui.MedicationActivity;
 
@@ -24,6 +29,8 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private ArrayList<Medication> medications = new ArrayList<>();
     private Context context;
+
+    private boolean showNextTime = true;
 
     public MedicationAdapter(Context context) {
         super();
@@ -58,6 +65,11 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
+    public void setShowNextTime(boolean showNextTime) {
+        this.showNextTime = showNextTime;
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         MedicationRowBinding binding;
 
@@ -68,8 +80,23 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         void bindView(final Medication medication, final int position) {
             binding.txtMedicationName.setText(medication.getName());
+            binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(context, medication.getType()));
 
-            binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
+            if(showNextTime) {
+                binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
+                Date now = new Date();
+                if (medication.getSchedule().getNextTime().before(now)) {
+                    binding.imgTime.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_red));
+                } else {
+                    binding.imgTime.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_yellow));
+                }
+            } else {
+                binding.txtTime.setVisibility(View.GONE);
+                binding.imgTime.setVisibility(View.GONE);
+            }
+
+            binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_green));
+            binding.txtTimeLastTaken.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getLastTaken()));
 
             // set click listener to open MedicationActivity
             itemView.setOnClickListener(v -> {

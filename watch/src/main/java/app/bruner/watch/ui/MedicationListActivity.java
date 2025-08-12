@@ -52,13 +52,17 @@ public class MedicationListActivity extends AppCompatActivity {
 
     // observe medications from view model
     private void observeMedications() {
-        viewModel.getMedications().observe(this, medications -> {
-            adapter.setMedications(medications);
-            if(medications != null && !medications.isEmpty()) {
-                binding.rcvMedications.setVisibility(View.VISIBLE);
-                binding.txtNoMedication.setVisibility(View.GONE);
+        viewModel.getTodayMedications().observe(this, medications -> {
+            if (medications != null) {
+                adapter.setMedications(medications);
+                if (!medications.isEmpty()) {
+                    binding.rcvMedications.setVisibility(View.VISIBLE);
+                    binding.txtNoMedication.setVisibility(View.GONE);
+                } else {
+                    binding.rcvMedications.setVisibility(View.GONE);
+                    binding.txtNoMedication.setVisibility(View.VISIBLE);
+                }
             } else {
-                // Show a message or handle empty list case
                 binding.rcvMedications.setVisibility(View.GONE);
                 binding.txtNoMedication.setVisibility(View.VISIBLE);
             }

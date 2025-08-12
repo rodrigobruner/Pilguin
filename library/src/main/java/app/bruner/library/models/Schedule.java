@@ -171,7 +171,7 @@ public class Schedule implements Serializable {
     }
 
     // get the last time when took the medication
-    public Date getLastWhenTook() {
+    public Date getLastTaken() {
         if (this.whenTook != null && !this.whenTook.isEmpty()) {
             return this.whenTook.get(this.whenTook.size() - 1);
         }

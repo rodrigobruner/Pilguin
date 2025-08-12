@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import app.bruner.library.models.Medication;
 import app.bruner.library.viewModels.MedicationViewModel;
-import app.bruner.watch.adapter.LatestMedicationAdapter;
+import app.bruner.watch.adapter.MedicationAdapter;
 import app.bruner.watch.databinding.ActivityLatestMedicationBinding;
 
 public class LatestMedicationActivity extends AppCompatActivity {
@@ -19,7 +19,7 @@ public class LatestMedicationActivity extends AppCompatActivity {
     private ActivityLatestMedicationBinding binding;
     private ArrayList<Medication> medicationList = new ArrayList<>();
     private MedicationViewModel viewModel;
-    private LatestMedicationAdapter adapter;
+    private MedicationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +36,15 @@ public class LatestMedicationActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        binding.rcvMedications.setLayoutManager(new WearableLinearLayoutManager(this));
-        adapter = new LatestMedicationAdapter(this);
+        binding.rcvMedications.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
+        adapter = new MedicationAdapter(this);
         binding.rcvMedications.setAdapter(adapter);
         binding.rcvMedications.setEdgeItemsCenteringEnabled(true);
     }
 
     private void observeMedications() {
-        viewModel.getMedications().observe(this, medications -> {
+        viewModel.getLatestMedication(getApplicationContext()).observe(this, medications -> {
+            adapter.setShowNextTime(false);
             adapter.setMedications(medications);
             if (medications != null && !medications.isEmpty()) {
                 binding.rcvMedications.setVisibility(View.VISIBLE);

@@ -52,8 +52,8 @@ public class MedicationViewModel extends AndroidViewModel {
     }
 
     // get medications for today
-    public LiveData<ArrayList<Medication>> getMedicationsForToday(Context context){
-        return repository.getMedicationsForToday(context);
+    public LiveData<ArrayList<Medication>> getTodayMedications() {
+        return repository.getTodayMedications(getApplication().getApplicationContext());
     }
 
     // get latest medication

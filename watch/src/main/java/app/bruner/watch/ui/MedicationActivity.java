@@ -1,14 +1,12 @@
 package app.bruner.watch.ui;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.gson.Gson;
+import androidx.core.content.ContextCompat;
 
 import java.util.Date;
 
@@ -71,11 +69,13 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     private void setupViews() {
         if (medication != null) {
 
-            // set visibility of ui
+            // set title
             binding.txtNextMedication.setText(getString(R.string.txt_next_medication));
             binding.txtNextMedication.setTextColor(
                     getColor(app.bruner.library.R.color.light_red)
             );
+
+            // set visibility of ui
             binding.linLayContent.setVisibility(View.VISIBLE);
             binding.buttons.setVisibility(View.VISIBLE);
 
@@ -83,14 +83,25 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.txtName.setText(medication.getName());
             binding.txtDosage.setText(medication.getDosage());
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
+
+
             if (medication.getSchedule() != null) { // covert date to string
-                Date nextTime = medication.getSchedule().getNextTime();
-                String nextTimeString = DateTimeParseUtils.formatDateTime(getBaseContext(), nextTime);
-                binding.txtTime.setText(nextTimeString);
-                binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastWhenTook()));
+                binding.txtTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getNextTime()));
+                Date now = new Date();
+                if (medication.getSchedule().getNextTime().before(now)) {
+                    binding.imgTime.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_red));
+                } else {
+                    binding.imgTime.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_yellow));
+                }
             } else {
                 binding.txtTime.setText("");
             }
+
+            binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_green));
+            binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastTaken()));
+
+
+
         } else {
             // set visibility of ui
             binding.linLayContent.setVisibility(View.GONE);
