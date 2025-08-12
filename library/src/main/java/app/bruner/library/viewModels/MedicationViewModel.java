@@ -1,6 +1,7 @@
 package app.bruner.library.viewModels;
 
 import android.app.Application;
+import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -9,33 +10,38 @@ import app.bruner.library.models.Medication;
 import app.bruner.library.repositories.MedicationRepository;
 
 /**
- * MedicationViewModel
+ * ViewModel to deal with medication data.
  */
 public class MedicationViewModel extends AndroidViewModel {
 
     private final MedicationRepository repository;
-    private final LiveData<ArrayList<Medication>> medications;
 
     public MedicationViewModel(@NonNull Application application) {
         super(application);
         repository = MedicationRepository.getInstance();
-        medications = repository.getMedications(application.getApplicationContext());
     }
 
     public LiveData<ArrayList<Medication>> getMedications() {
-        return medications;
+        return repository.getMedications(getApplication().getApplicationContext());
     }
 
     public void deleteMedication(long medicationId) {
         repository.deleteMedication(getApplication().getApplicationContext(), medicationId);
-
-    }
-
-    public void getNextMedications() {
-        repository.getNextMedications(getApplication().getApplicationContext());
     }
 
     public void addMedication(Medication medication) {
         repository.addMedication(getApplication().getApplicationContext(), medication);
+    }
+
+    public LiveData<ArrayList<Medication>> getMedicationsForToday(Context context){
+        return repository.getMedicationsForToday(context);
+    }
+
+    public LiveData<ArrayList<Medication>> getLatestMedication(Context context) {
+        return repository.getLatestMedication(context);
+    }
+
+    public LiveData<ArrayList<Medication>> getNextMedications() {
+        return repository.getNextMedications(getApplication().getApplicationContext());
     }
 }

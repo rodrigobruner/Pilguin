@@ -56,7 +56,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
         medication = getIntent().getSerializableExtra(MEDICATION_PARAM, Medication.class);
         if(medication == null) { // if result is null
             // get first medication from database
-            viewModel.getMedications().observe(this, medications -> {
+            viewModel.getNextMedications().observe(this, medications -> {
                 if (medications != null && !medications.isEmpty()) {
                     medication = medications.get(0); // first in the list
                     setupViews(); // setup views
@@ -73,6 +73,9 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
 
             // set visibility of ui
             binding.txtNextMedication.setText(getString(R.string.txt_next_medication));
+            binding.txtNextMedication.setTextColor(
+                    getColor(app.bruner.library.R.color.light_red)
+            );
             binding.linLayContent.setVisibility(View.VISIBLE);
             binding.buttons.setVisibility(View.VISIBLE);
 
@@ -84,6 +87,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
                 Date nextTime = medication.getSchedule().getNextTime();
                 String nextTimeString = DateTimeParseUtils.formatDateTime(getBaseContext(), nextTime);
                 binding.txtTime.setText(nextTimeString);
+                binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastWhenTook()));
             } else {
                 binding.txtTime.setText("");
             }
@@ -92,6 +96,9 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.linLayContent.setVisibility(View.GONE);
             binding.buttons.setVisibility(View.GONE);
             binding.txtNextMedication.setText(getString(R.string.txt_msg_no_medication));
+            binding.txtNextMedication.setTextColor(
+                    getColor(app.bruner.library.R.color.blue_700)
+            );
         }
     }
 

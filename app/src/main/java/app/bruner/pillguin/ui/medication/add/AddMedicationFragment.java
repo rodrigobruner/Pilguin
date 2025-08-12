@@ -152,7 +152,7 @@ public class AddMedicationFragment extends Fragment {
         viewModel.addMedication(medication);
 //        MedicationUtils.add(getContext(), medication);
 
-        ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication);
+        ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication, ScheduleAlarmUtils.TYPE_MEDICATION_REMINDER);
 
         // show success message
         Toast.makeText(requireContext(), getString(R.string.msg_success_saved), Toast.LENGTH_SHORT).show();

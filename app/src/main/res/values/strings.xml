@@ -106,6 +106,12 @@
     <string name="txt_notification_action_taken">Mark as taken</string>
     <string name="txt_notification_action_see_detail">See datail</string>
 
+    <string name="txt_notification_side_effect_title">How are you feeling?</string>
+    <string name="txt_notification_side_effect_msg">Any side effects after taking %s?</string>
+    <string name="txt_notification_action_im_fine">I\'m fine.</string>
+    <string name="txt_notification_action_report_side_effect">Report side effect</string>
+
+
     <!-- Medication report -->
     <string name="txt_medication_report">Medication Report</string>
     <string name="doses_taken">Doses Taken: %1$d</string>

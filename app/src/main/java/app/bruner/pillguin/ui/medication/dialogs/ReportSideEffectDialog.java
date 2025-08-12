@@ -19,6 +19,9 @@ import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.databinding.DialogReportSideEffectBinding;
 
+/**
+ * Dialog to report side effectså
+ */
 public class ReportSideEffectDialog extends DialogFragment {
 
     private Medication medication;

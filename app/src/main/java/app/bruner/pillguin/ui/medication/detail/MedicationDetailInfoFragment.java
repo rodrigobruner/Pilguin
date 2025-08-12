@@ -22,6 +22,7 @@ import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.FragmentMedicationDetailInfoBinding;
 import app.bruner.pillguin.ui.medication.dialogs.ReportSideEffectDialog;
+import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 
 /**
  * Fragment to display medication information
@@ -85,7 +86,6 @@ public class MedicationDetailInfoFragment extends Fragment implements View.OnCli
                 sb.append(getString(R.string.txt_hour_frequency, schedule.getInterval()));
             }
 
-
             ArrayList<String> days = schedule.getDaysOfWeekAsString();
             if (days != null && !days.isEmpty()) {
                 sb.append("\n").append(getString(R.string.txt_days_frequency, days));
@@ -120,6 +120,7 @@ public class MedicationDetailInfoFragment extends Fragment implements View.OnCli
         if(v.getId() == binding.btnTookMedicine.getId()){ // Took medication
             medication.getSchedule().addWhenTook(new Date());
             MedicationUtils.update(getContext(), medication);
+            ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication, ScheduleAlarmUtils.TYPE_SIDE_EFFECT);
             Toast.makeText(getContext(), getString(R.string.msg_you_took, medication.getName()) + medication.getName(), Toast.LENGTH_SHORT).show();
         }
     }

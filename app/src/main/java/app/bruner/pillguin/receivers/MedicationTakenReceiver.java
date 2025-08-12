@@ -12,6 +12,7 @@ import java.util.Date;
 import app.bruner.library.models.Medication;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.pillguin.R;
+import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 
 /**
  * A BroadcastReceiver that handle with taking medication on notification
@@ -34,6 +35,8 @@ public class MedicationTakenReceiver extends BroadcastReceiver {
                 // save the time
                 medication.getSchedule().addWhenTook(new Date());
                 MedicationUtils.update(context, medication);
+
+                ScheduleAlarmUtils.scheduleTaskAlarm(context, medication, ScheduleAlarmUtils.TYPE_SIDE_EFFECT);
 
                 // cancel/clean the notification
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

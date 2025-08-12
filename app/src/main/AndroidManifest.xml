@@ -34,6 +34,11 @@
             android:enabled="true"
             android:exported="false" />
 
+        <receiver
+            android:name=".receivers.SideEffectAlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <!-- Add the services -->
         <service android:name="app.bruner.library.services.MedicationSyncService"
             android:exported="false" />

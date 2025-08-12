@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set click listeners
         binding.btnDailyMedication.setOnClickListener(this);
         binding.btnNextMedication.setOnClickListener(this);
+        binding.btnLatestMedication.setOnClickListener(this);
 
         // strat the medicationSyncService
         Intent serviceIntent = new Intent(this, MedicationSyncService.class);
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, MedicationListActivity.class));
         } else if (v.getId() == R.id.btn_next_medication) {
             startActivity(new Intent(this, MedicationActivity.class));
+        } else if (v.getId() == R.id.btn_latest_medication) {
+            startActivity(new Intent(this, LatestMedicationActivity.class));
         }
     }
 

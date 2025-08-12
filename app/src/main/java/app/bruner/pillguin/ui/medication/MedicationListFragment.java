@@ -22,6 +22,7 @@ import app.bruner.pillguin.adapters.MedicationListAdapter;
 import app.bruner.pillguin.databinding.FragmentMedicationListBinding;
 import app.bruner.pillguin.ui.medication.detail.MedicationDetailFragment;
 import app.bruner.pillguin.ui.medication.dialogs.ReportSideEffectDialog;
+import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 
 /**
  * Fragment to display a list of medications
@@ -60,6 +61,7 @@ public class MedicationListFragment extends Fragment {
             public void onTookMedication(Medication medication) {
                 medication.getSchedule().addWhenTook(new Date());
                 MedicationUtils.update(getContext(), medication);
+                ScheduleAlarmUtils.scheduleTaskAlarm(getContext(), medication, ScheduleAlarmUtils.TYPE_SIDE_EFFECT);
                 Toast.makeText(getContext(), getString(R.string.msg_you_took, medication.getName()) + medication.getName(), Toast.LENGTH_SHORT).show();
             }
 

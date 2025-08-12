@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-feature android:name="android.hardware.type.watch" />
-    <!-- permissions -->
+    <uses-feature android:name="android.hardware.type.watch" /> <!-- permissions -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -15,30 +14,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".ui.LatestMedicationActivity"
+            android:exported="false" />
         <!-- Companion app -->
         <meta-data
             android:name="com.google.android.wearable.standalone"
-            android:value="false" />
-
-        <!-- Link to main phone app -->
+            android:value="false" /> <!-- Link to main phone app -->
         <meta-data
             android:name="com.google.android.wearable.beta.app"
-            android:value="app.bruner.pillguin" />
-
-        <!-- Sync service -->
+            android:value="app.bruner.pillguin" /> <!-- Sync service -->
         <service
             android:name="app.bruner.library.services.MedicationSyncService"
-            android:exported="false"
-            android:enabled="true" />
-
-        <!-- Notification service -->
+            android:enabled="true"
+            android:exported="false" /> <!-- Notification service -->
         <receiver
             android:name=".receivers.WatchMedicationReceiver"
-            android:exported="true">
-        </receiver>
-
-        <!-- Activities -->
+            android:exported="true"></receiver> <!-- Activities -->
         <activity android:name="androidx.wear.activity.ConfirmationActivity" />
         <activity
             android:name=".ui.ReportSideEffectActivity"
@@ -54,6 +46,7 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="app.bruner.watch.MEDICATION_DETAILS" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -63,10 +56,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

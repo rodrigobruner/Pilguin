@@ -14,10 +14,12 @@ import java.util.List;
 import app.bruner.library.models.Medication;
 import app.bruner.pillguin.R;
 
+/**
+ * Adapter to display reports
+ */
 public class MedicationReportAdapter extends RecyclerView.Adapter<MedicationReportAdapter.ViewHolder> {
 
     private final List<Medication> medicationList;
-    private final int expectedDoses = 30; // Or get dynamically from schedule
     private final Context context;
 
     public MedicationReportAdapter(List<Medication> meds, Context context) {
@@ -49,7 +51,7 @@ public class MedicationReportAdapter extends RecyclerView.Adapter<MedicationRepo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textMedicationName, textDosesTaken, textExpectedDoses, textMissedDoses, textAdherence;
+        TextView textMedicationName, textDosesTaken;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

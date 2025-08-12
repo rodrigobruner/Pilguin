@@ -170,6 +170,14 @@ public class Schedule implements Serializable {
         setNextTime();
     }
 
+    // get the last time when took the medication
+    public Date getLastWhenTook() {
+        if (this.whenTook != null && !this.whenTook.isEmpty()) {
+            return this.whenTook.get(this.whenTook.size() - 1);
+        }
+        return null;
+    }
+
     public boolean isExpired() {
         return isExpired;
     }
