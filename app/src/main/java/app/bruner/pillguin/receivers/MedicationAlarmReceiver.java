@@ -110,7 +110,6 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
                 .setContentText(message) //set message
                 .setPriority(NotificationCompat.PRIORITY_HIGH) // set priority
                 .setContentIntent(appShowMedicationIntent) // set intent to show medication detail on app
-                .setAutoCancel(true) // close notification when clicked
                 .setCategory(NotificationCompat.CATEGORY_ALARM) // set category for alarm
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // set visibility for public
                 // set buttons for message on app
@@ -120,7 +119,8 @@ public class MedicationAlarmReceiver extends BroadcastReceiver {
                 .addAction(android.R.drawable.ic_menu_view,
                         context.getString(R.string.txt_notification_action_see_detail),
                         appShowMedicationIntent)
-                .extend(wearableExtender); // add buttons for watch
+                .extend(wearableExtender) // add buttons for watch
+                .setAutoCancel(true); // close notification when clicked;
 
         // Show notification
         notificationManager.notify(stringMedication.hashCode(), builder.build());

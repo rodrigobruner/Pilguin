@@ -32,6 +32,12 @@ public class LatestMedicationActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
         viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
         setupRecyclerView();

@@ -47,11 +47,16 @@ public class MedicationListFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
         setSpinner();
         setRecyclerView();
     }
-
 
     private void setSpinner() {
         // create adapter using the string array from resources

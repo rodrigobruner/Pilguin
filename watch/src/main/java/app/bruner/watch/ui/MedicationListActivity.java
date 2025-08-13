@@ -35,6 +35,12 @@ public class MedicationListActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
     private void init() {
         // initialize view model
         viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);

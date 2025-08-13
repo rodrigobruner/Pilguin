@@ -103,7 +103,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
 
 
-            if (medication.getSchedule() != null) {
+            if (medication.getSchedule() != null && medication.getSchedule().getNextTime() != null) {
                 // covert date to string
                 binding.txtTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getNextTime()));
                 Date now = new Date();
