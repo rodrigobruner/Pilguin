@@ -78,7 +78,7 @@ public class AddMedicationIntervalCard extends Fragment implements ScheduleProvi
     @Override
     public Schedule getSchedule() { // contract method to get the schedule
 
-        // Start date
+        // start date
         String startDateStr = binding.txtStartDate.getText().toString();
         Date startDate = DateTimeParseUtils.parseDateTime(getContext(), startDateStr);
         binding.txtStartDate.setError(null);
@@ -87,7 +87,7 @@ public class AddMedicationIntervalCard extends Fragment implements ScheduleProvi
             return null;
         }
 
-        // End date or indefinite
+        // end date or indefinite
         boolean isIndefinite = binding.swhNoEndDate.isChecked();
         Date endDate = null;
         binding.txtEndDate.setError(null);

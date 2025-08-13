@@ -35,7 +35,7 @@ public class MedicationDetailInfoFragment extends Fragment implements View.OnCli
     private MedicationViewModel viewModel;
 
     // factory to create a new instance of this fragment
-    // use factory method to pass the medication object as parameter
+    // I use factory method to pass the medication object as parameter
     public static MedicationDetailInfoFragment newInstance(Medication medicationParam) {
         MedicationDetailInfoFragment fragment = new MedicationDetailInfoFragment();
         Bundle args = new Bundle();

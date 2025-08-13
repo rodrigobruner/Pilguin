@@ -20,12 +20,12 @@ import app.bruner.pillguin.ui.HomeActivity;
 
 public class SideEffectAlarmReceiver extends BroadcastReceiver {
 
-    // Constants for medication notification
+    // constant for medication notification
     private static final String MEDICATION_PARAMETER = "MEDICATION";
     private static final String MEDICATION_CHANNEL_ID = "medication_side_effect";
     private static final String MEDICATION_CHANNEL_NAME = "Medication side effect tracking";
 
-    // Constants for intents
+    // constant for intent
     private static final String EXTRA_MEDICATION = "medication";
     private static final String EXTRA_NAVIGATION = "navigation_target";
     private static final String EXTRA_NAVIGATION_VALUE_DETAILS = "medication_details";

@@ -14,6 +14,9 @@ import app.bruner.library.viewModels.MedicationViewModel;
 import app.bruner.watch.adapter.MedicationAdapter;
 import app.bruner.watch.databinding.ActivityLatestMedicationBinding;
 
+/**
+ * Activity that show the latest medications taken
+ */
 public class LatestMedicationActivity extends AppCompatActivity {
 
     private ActivityLatestMedicationBinding binding;
@@ -35,6 +38,7 @@ public class LatestMedicationActivity extends AppCompatActivity {
         observeMedications();
     }
 
+    // setup RecyclerView
     private void setupRecyclerView() {
         binding.rcvMedications.setLayoutManager(new androidx.wear.widget.WearableLinearLayoutManager(this));
         adapter = new MedicationAdapter(this);
@@ -43,9 +47,12 @@ public class LatestMedicationActivity extends AppCompatActivity {
     }
 
     private void observeMedications() {
+        // observe the latest medications taken
         viewModel.getLatestMedication(getApplicationContext()).observe(this, medications -> {
             adapter.setShowNextTime(false);
             adapter.setMedications(medications);
+
+            // show/hide no medication text
             if (medications != null && !medications.isEmpty()) {
                 binding.rcvMedications.setVisibility(View.VISIBLE);
                 binding.txtNoMedication.setVisibility(View.GONE);

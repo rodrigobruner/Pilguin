@@ -30,8 +30,6 @@ public class ScheduleAlarmUtils {
             return;
         }
 
-
-
         // convert task to JSON
         Gson gson = new Gson();
         String json = gson.toJson(medication);

@@ -82,23 +82,23 @@ public class MedicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             binding.txtMedicationName.setText(medication.getName());
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(context, medication.getType()));
 
-            if(showNextTime) {
+            if(showNextTime) { // is to show  next time info
                 binding.txtTime.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getNextTime()));
                 Date now = new Date();
-                if (medication.getSchedule().getNextTime().before(now)) {
+                if (medication.getSchedule().getNextTime().before(now)) { // set red if is late
                     binding.imgTime.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_red));
-                } else {
+                } else { // yellow if is not
                     binding.imgTime.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_yellow));
                 }
-            } else {
+            } else { // else hide
                 binding.txtTime.setVisibility(View.GONE);
                 binding.imgTime.setVisibility(View.GONE);
             }
 
-            if(medication.getSchedule().getLastTaken() == null) {
+            if(medication.getSchedule().getLastTaken() == null) { // never taken, set gray
                 binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.gray_400));
                 binding.txtTimeLastTaken.setText(context.getString(R.string.txt_never_taken));
-            } else {
+            } else { // set last taken date, green
                 binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(context, app.bruner.library.R.color.light_green));
                 binding.txtTimeLastTaken.setText(DateTimeParseUtils.formatDateTime(context, medication.getSchedule().getLastTaken()));
             }

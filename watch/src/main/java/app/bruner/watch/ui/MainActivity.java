@@ -28,7 +28,6 @@ import utils.Constants;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
     ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private android.content.ServiceConnection serviceConnection = new android.content.ServiceConnection() {
         @Override
         public void onServiceConnected(android.content.ComponentName name, android.os.IBinder service) {
-            Log.d("Sync service", "WATCH: Sync service connected");
+            Log.d("Sync service", "WATCH: Sync connected");
         }
 
         @Override
         public void onServiceDisconnected(android.content.ComponentName name) {
-            Log.d("Sync service", "WATCH: Sync service disconnected");
+            Log.d("Sync service", "WATCH: Sync disconnected");
         }
     };
 
@@ -96,13 +95,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkWearableConnection() {
         Wearable.getNodeClient(this).getConnectedNodes()
                 .addOnSuccessListener(nodes -> {
-                    Log.d("Sync service", "WATCH: Connected nodes: " + nodes.size());
+                    Log.d("Sync service", "WATCH: #nodes: " + nodes.size());
                     for (Node node : nodes) {
                         Log.d("Sync service", "WATCH: Node: " + node.getDisplayName());
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Sync service", "WATCH: Failed to get connected nodes", e);
+                    Log.e("Sync service", "WATCH: Error get connected nodes", e);
                 });
     }
 

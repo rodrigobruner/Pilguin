@@ -1,4 +1,4 @@
-package app.bruner.pillguin.ui.medication;
+package app.bruner.pillguin.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

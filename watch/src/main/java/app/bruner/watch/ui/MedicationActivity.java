@@ -74,6 +74,7 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void observeMedicationById(long medicationId) {
+        // observe the select
         viewModel.getMedicationById(medicationId).observe(this, medication -> {
             if (medication != null) {
                 this.medication = medication;
@@ -102,22 +103,23 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             binding.imgType.setImageResource(MedicineTypeIconMapper.getIconByType(getBaseContext(), medication.getType()));
 
 
-            if (medication.getSchedule() != null) { // covert date to string
+            if (medication.getSchedule() != null) {
+                // covert date to string
                 binding.txtTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getNextTime()));
                 Date now = new Date();
-                if (medication.getSchedule().getNextTime().before(now)) {
+                if (medication.getSchedule().getNextTime().before(now)) { // set red if is late
                     binding.imgTime.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_red));
-                } else {
+                } else { // yellow if is not
                     binding.imgTime.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_yellow));
                 }
             } else {
                 binding.txtTime.setText("");
             }
 
-            if(medication.getSchedule().getLastTaken() == null) {
+            if(medication.getSchedule().getLastTaken() == null) { // never taken, set gray
                 binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.gray_400));
                 binding.txtLastTime.setText(getBaseContext().getString(R.string.txt_never_taken));
-            } else {
+            } else { // set last taken date, green
                 binding.imgTimeLastTaken.setColorFilter(ContextCompat.getColor(getBaseContext(), app.bruner.library.R.color.light_green));
                 binding.txtLastTime.setText(DateTimeParseUtils.formatDateTime(getBaseContext(), medication.getSchedule().getLastTaken()));
             }
@@ -133,7 +135,8 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onClick(View v) { // deal with button clicks
+    public void onClick(View v) {
+        // deal took button
         if(v.getId() == binding.btnTookThisMedication.getId()) { // took this medication
             medication.getSchedule().addWhenTook(new Date());
             MedicationUtils.update(this, medication);
@@ -147,7 +150,8 @@ public class MedicationActivity extends AppCompatActivity implements View.OnClic
             }, 1000);
         }
 
-        if(v.getId() == binding.btnReportSideEffects.getId()) { // report side effects
+        // report side effects button
+        if(v.getId() == binding.btnReportSideEffects.getId()) {
             Intent intent = new Intent(getBaseContext(), ReportSideEffectActivity.class);
             intent.putExtra(MedicationActivity.MEDICATION_PARAM, medication);
             startActivity(intent);

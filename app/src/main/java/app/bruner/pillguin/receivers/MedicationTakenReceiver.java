@@ -18,7 +18,7 @@ import app.bruner.pillguin.R;
 import app.bruner.pillguin.utils.ScheduleAlarmUtils;
 
 /**
- * A BroadcastReceiver that handle with taking medication on notification
+ * A BroadcastReceiver to dial with taking medication on notification
  */
 public class MedicationTakenReceiver extends BroadcastReceiver {
     private static final String EXTRA_MEDICATION = "medication";
@@ -31,7 +31,9 @@ public class MedicationTakenReceiver extends BroadcastReceiver {
             Medication medication = new Gson().fromJson(medicationJson, Medication.class);
 
             if (medication != null && medication.getSchedule() != null) {
-                // First, get the current medication from storage to preserve existing data
+
+                //TODO: refectory here to use ViewModel to do it, I create a getMedicationById
+                // get the current medication from storage
                 ArrayList<Medication> currentMedications = MedicationUtils.getAll(context);
                 Medication currentMedication = null;
 
@@ -43,22 +45,25 @@ public class MedicationTakenReceiver extends BroadcastReceiver {
                 }
 
                 if (currentMedication != null) {
-                    // Add to existing medication
+                    // Add that took date
                     currentMedication.getSchedule().addWhenTook(new Date());
-                    MedicationUtils.update(context, currentMedication);
+                    MedicationUtils.update(context, currentMedication); // save
 
-                    // Force sync with merge
+                    // force data sync
                     DataSyncUtils.sendUpdate(context);
 
+                    // create a side effect alarm
                     ScheduleAlarmUtils.scheduleTaskAlarm(context, currentMedication, ScheduleAlarmUtils.TYPE_SIDE_EFFECT);
                 }
 
-                // Cancel notification and show toast
+                // clear the notification
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(medicationJson.hashCode());
 
+                // shoe message
                 String message = context.getString(R.string.msg_you_took, medication.getName());
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
             }
         }
     }

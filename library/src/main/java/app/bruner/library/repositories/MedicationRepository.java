@@ -54,7 +54,7 @@ public class MedicationRepository {
             }
         }
 
-        // If not found, return null
+        // if not found, return null
         medicationLiveData.setValue(null);
         return medicationLiveData;
     }
@@ -84,7 +84,7 @@ public class MedicationRepository {
     public LiveData<ArrayList<Medication>> getNextMedications(Context context){
         ArrayList<Medication> nextMedications = MedicationUtils.getAll(context);
         nextMedications.sort((med1, med2) -> {
-            // Use the same null-safe approach
+            // check null value
             if (med1 == null || med2 == null) {
                 return 0;
             }
@@ -92,18 +92,18 @@ public class MedicationRepository {
             Date nextTime1 = getNextTimeDate(med1);
             Date nextTime2 = getNextTimeDate(med2);
 
-            // Handle null dates
+            // check null value
             if (nextTime1 == null && nextTime2 == null) {
-                return 0;
+                return 0; // equal
             }
             if (nextTime1 == null) {
-                return 1; // Put null dates at the end
+                return 1; // after, 1 < 2
             }
             if (nextTime2 == null) {
-                return -1;
+                return -1; // before, 1 > 2
             }
 
-            return nextTime1.compareTo(nextTime2);
+            return nextTime1.compareTo(nextTime2);  // compare
         });
 
         MutableLiveData<ArrayList<Medication>> data = new MutableLiveData<>();
@@ -124,6 +124,7 @@ public class MedicationRepository {
         ArrayList<Medication> all = MedicationUtils.getAll(context);
         ArrayList<Medication> todayMedications = new ArrayList<>();
 
+        // get current date
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
@@ -132,14 +133,18 @@ public class MedicationRepository {
         Date todayStart = today.getTime();
 
         today.add(Calendar.DAY_OF_MONTH, 1);
-        Date tomorrowStart = today.getTime();
+        Date tomorrowStart = today.getTime(); // start next day
 
-        for (Medication med : all) {
+        for (Medication med : all) { // foreach medication
+
+            // skip null
             if (med == null || med.getSchedule() == null) {
                 continue;
             }
 
-            Schedule schedule = med.getSchedule();
+            Schedule schedule = med.getSchedule(); // get schedule
+
+            // flags to check
             boolean isScheduledToday = false;
             boolean wasTakenToday = false;
 
@@ -173,10 +178,18 @@ public class MedicationRepository {
             Date nextTime1 = med1.getSchedule().getNextTime();
             Date nextTime2 = med2.getSchedule().getNextTime();
 
-            if (nextTime1 == null && nextTime2 == null) return 0;
-            if (nextTime1 == null) return 1;
-            if (nextTime2 == null) return -1;
+            // check null value
+            if (nextTime1 == null && nextTime2 == null) {
+                return 0; // equal
+            }
+            if (nextTime1 == null) {
+                return 1; // after, 1 < 2
+            }
+            if (nextTime2 == null) {
+                return -1; // before, 1 > 2
+            }
 
+            //compare
             return nextTime1.compareTo(nextTime2);
         });
 
@@ -187,23 +200,23 @@ public class MedicationRepository {
 
     // get the latest medication
     public LiveData<ArrayList<Medication>> getLatestMedication(Context context) {
-        ArrayList<Medication> all = MedicationUtils.getAll(context);
+
+        ArrayList<Medication> all = MedicationUtils.getAll(context); // get all medications
         ArrayList<Medication> sortedMedications = new ArrayList<>();
 
-        for (Medication med : all) {
-            if (isValidLastTaken(med)) {
+        for (Medication med : all) { // foreach medication
+
+            if (isValidLastTaken(med)) { // check if have last taken date
                 Date lastTaken = getLastTakenDate(med);
 
-                // Find the correct position to insert (ordered by most recent first)
                 int insertPosition = 0;
-                for (int i = 0; i < sortedMedications.size(); i++) {
+                for (int i = 0; i < sortedMedications.size(); i++) { // order insert
                     Date existingLastTaken = getLastTakenDate(sortedMedications.get(i));
 
                     // If current medication is older, insert here
                     if (lastTaken.before(existingLastTaken)) {
                         insertPosition = i + 1;
                     } else {
-                        // Current medication is newer, insert at current position
                         break;
                     }
                 }

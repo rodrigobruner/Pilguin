@@ -54,7 +54,7 @@ public class MedicationListFragment extends Fragment {
 
 
     private void setSpinner() {
-        // Create adapter using the string array from resources
+        // create adapter using the string array from resources
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 getContext(),
                 R.array.list_filter_options,
@@ -74,9 +74,7 @@ public class MedicationListFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
@@ -147,9 +145,8 @@ public class MedicationListFragment extends Fragment {
         new ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.recyclerViewMedicine);
     }
 
-    // Observe medications changes on ViewModel
+    // observe medications, change by filter
     private void applyFilter(String filter) {
-
 
         switch (filter) {
             case "Taken":

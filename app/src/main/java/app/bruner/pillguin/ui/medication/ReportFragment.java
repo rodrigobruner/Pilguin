@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import app.bruner.library.viewModels.MedicationViewModel;
-import app.bruner.pillguin.R;
+import app.bruner.pillguin.adapters.MedicationReportAdapter;
 import app.bruner.pillguin.databinding.FragmentReportBinding;
-import app.bruner.pillguin.ui.medication.MedicationReportAdapter;
+
 
 public class ReportFragment extends Fragment {
 

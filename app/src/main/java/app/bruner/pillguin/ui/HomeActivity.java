@@ -89,9 +89,9 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    // handle parameters passed to this activity by notification actions
+    // deal with parameters passed to this activity on notification actions
     private void handleParams() {
-        Bundle extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras(); //get extra
         if (extras != null) {
             // get params
             String navigation = extras.getString(EXTRA_NAVIGATION);
@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (medication != null && medication.getSchedule() != null && EXTRA_NAVIGATION_VALUE_TOOK.equals(navigation)) { // took medication action
                     medication.getSchedule().addWhenTook(new Date());
                     MedicationUtils.update(getApplicationContext(), medication);
-                    Toast.makeText(getApplicationContext(), getString(R.string.msg_you_took) + medication.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.msg_you_took, medication.getName()), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     //========= Permission  Request =========
-
+    // TODO: refectory, ask all in the same time
     public void requestPermitions() {
         // show request permissions dialog for POST_NOTIFICATIONS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == Constants.PERMISSION_CODE) { // Check if all permissions were granted
             for (int i = 0; i < permissions.length; i++) {
-                // If the permission denied, show a toast
+                // if the permission denied, show a toast
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     String perm = permissions[i];
                     String msg = getString(R.string.txt_permition_denied) + perm;

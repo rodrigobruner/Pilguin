@@ -12,7 +12,7 @@ import java.util.List;
 import app.bruner.library.models.Medication;
 
 /**
- * Deal with medication data storage in SharedPreferences.
+ * Deal with medication data in SharedPreferences.
  */
 public class MedicationUtils {
 

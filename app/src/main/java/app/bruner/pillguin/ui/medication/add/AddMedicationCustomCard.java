@@ -83,7 +83,7 @@ public class AddMedicationCustomCard extends Fragment implements ScheduleProvide
             }
         };
 
-        // Set the listener
+        // set the listener
         binding.swhWeekSunday.setOnCheckedChangeListener(listener);
         binding.swhWeekModay.setOnCheckedChangeListener(listener);
         binding.swhWeekTuesday.setOnCheckedChangeListener(listener);
@@ -92,7 +92,7 @@ public class AddMedicationCustomCard extends Fragment implements ScheduleProvide
         binding.swhWeekFriday.setOnCheckedChangeListener(listener);
         binding.swhWeekSaturday.setOnCheckedChangeListener(listener);
 
-        // Initial validation
+        // initia validation
         listener.onCheckedChanged(null, false);
     }
 
@@ -101,9 +101,10 @@ public class AddMedicationCustomCard extends Fragment implements ScheduleProvide
     public Schedule getSchedule() { // contract method to get the schedule
         try {
 
-            // Start date
+            // start date
             String startDateStr = binding.txtStartDate.getText().toString();
             Date startDate = DateTimeParseUtils.parseDateTime(getContext(), startDateStr);
+
             // check if is valid
             binding.txtStartDate.setError(null);
             if (startDateStr == null || startDate == null) {
@@ -111,7 +112,7 @@ public class AddMedicationCustomCard extends Fragment implements ScheduleProvide
                 return null;
             }
 
-            // End date or indefinite
+            // end date or indefinite
             boolean isIndefinite = binding.swhNoEndDate.isChecked();
             binding.txtEndDate.setError(null); // reset error
             Date endDate = null;

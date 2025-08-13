@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    // service connection to observe sync service
+    // service connection to observe sync
     private android.content.ServiceConnection serviceConnection = new android.content.ServiceConnection() {
         @Override
         public void onServiceConnected(android.content.ComponentName name, android.os.IBinder service) {
@@ -92,15 +92,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkWearableConnection() {
         Wearable.getNodeClient(this).getConnectedNodes()
                 .addOnSuccessListener(nodes -> {
-                    Log.d("Sync service", "WATCH: Connected nodes: " + nodes.size());
+                    Log.d("Sync service", "WATCH: #nodes: " + nodes.size());
                     for (Node node : nodes) {
                         Log.d("Sync service", "WATCH: Node: " + node.getDisplayName());
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Sync service", "WATCH: Failed to get connected nodes", e);
+                    Log.e("Sync service", "WATCH: Error get connected nodes", e);
                 });
     }
-
-
 }

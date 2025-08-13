@@ -124,6 +124,9 @@
     <string name="missed_doses">Missed Doses: %1$d</string>
     <string name="adherence_percent">Adherence: %.1f%%</string>
 
+    <!-- Side effect dialog -->
+    <string name="txt_description_empty">Description cannot be empty</string>
+    <string name="msg_side_effect_reported">Side effect reported</string>
 
     <!-- Date picker -->
     <string name="date_picker_invalid_format">"Invalid date format."</string>

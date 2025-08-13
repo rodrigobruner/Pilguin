@@ -35,7 +35,7 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
     private MedicationViewModel viewModel;
 
     // factory to create a new instance of this fragment
-    // use factory method to pass the medication object as parameter
+    // I use factory method to pass the medication object as parameter
     public static MedicationDetailSideEffectsFragment newInstance(Medication medicationParam) {
         MedicationDetailSideEffectsFragment fragment = new MedicationDetailSideEffectsFragment();
         Bundle args = new Bundle();
@@ -74,9 +74,9 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
         viewModel.getMedicationById(medicationId).observe(getViewLifecycleOwner(), medication -> {
             if (medication != null) {
                 this.medication = medication;
-                loadSideEffects(); // Sempre recarrega quando medication muda
+                loadSideEffects(); // load side effects
             } else {
-                // Caso medication seja null, limpa a lista
+                // if is null, set empty list
                 binding.listViewSideEffects.setAdapter(new ArrayAdapter<>(
                         requireContext(),
                         android.R.layout.simple_list_item_1,
@@ -87,12 +87,12 @@ public class MedicationDetailSideEffectsFragment extends Fragment {
     }
 
     // add a side effects
+    // TODO: refectory here to use a adapter
     private void loadSideEffects() {
         List<String> displayList = new ArrayList<>();
 
         if (medication != null && medication.getSideEffects() != null && !medication.getSideEffects().isEmpty()) {
             for (SideEffect se : medication.getSideEffects()) {
-
                 StringBuilder sb = new StringBuilder();
                 sb.append(getString(R.string.txt_reported_side_effects_description, se.getDescription()))
                         .append("\n")

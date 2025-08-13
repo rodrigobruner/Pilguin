@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title Text -->
     <TextView
         android:id="@+id/textSideEffectsTitle"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         android:text="@string/txt_reported_side_effects"
         style="@style/TitleMedium" />
 
-    <!-- Subtitle or description -->
     <TextView
         android:id="@+id/textSideEffectsSubtitle"
         android:layout_width="match_parent"

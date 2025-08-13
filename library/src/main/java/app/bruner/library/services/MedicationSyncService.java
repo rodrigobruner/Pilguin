@@ -18,13 +18,13 @@ import com.google.android.gms.wearable.Wearable;
 import app.bruner.library.utils.DataSyncUtils;
 
 /**
- * Service to deal with medication data synchronization between phone and watch
+ * Service to deal with medication data sync between phone and watch
  */
 public class MedicationSyncService extends Service implements DataClient.OnDataChangedListener {
 
     private static final String TAG = "MedicationSyncService";
 
-    // path for medication synchronization
+    // path for medication sync
     private static final String MEDICATIONS_SYNC_PATH = "/medications_sync";
 
     @Override

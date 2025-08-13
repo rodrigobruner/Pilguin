@@ -17,10 +17,11 @@ import app.bruner.library.models.Medication;
 import app.bruner.library.models.SideEffect;
 import app.bruner.library.utils.MedicationUtils;
 import app.bruner.library.viewModels.MedicationViewModel;
+import app.bruner.pillguin.R;
 import app.bruner.pillguin.databinding.DialogReportSideEffectBinding;
 
 /**
- * Dialog to report side effectså
+ * Dialog to report side effecta
  */
 public class ReportSideEffectDialog extends DialogFragment {
 
@@ -28,7 +29,8 @@ public class ReportSideEffectDialog extends DialogFragment {
     private MedicationViewModel medicationViewModel;
     DialogReportSideEffectBinding binding;
 
-
+    // factory to create a new instance of this dialog
+    // I use factory method to pass the medication object as parameter
     public static ReportSideEffectDialog newInstance(Medication medication) {
         ReportSideEffectDialog dialog = new ReportSideEffectDialog();
         Bundle args = new Bundle();
@@ -49,29 +51,32 @@ public class ReportSideEffectDialog extends DialogFragment {
     }
 
     private void init(){
+        // set medication
         if (getArguments() != null) {
             medication = getArguments().getSerializable("medication", Medication.class);
         }
 
+        // set view model
         medicationViewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
 
+        // button tosubmit
         binding.buttonDialogSubmit.setOnClickListener(v -> {
             String description = binding.editDialogSideEffect.getText().toString().trim();
             if (description.isEmpty()) {
-                Toast.makeText(getContext(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.txt_description_empty), Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Create side effect
+            // create side effect
             SideEffect newEffect = new SideEffect(description, new Date());
 
-            // Add to medication's side effects list
+            // add to medication's side effects list
             if (medication != null && medication.getSideEffects() != null) {
                 medication.getSideEffects().add(newEffect);
                 MedicationUtils.update(getContext(), medication);
             }
 
-            Toast.makeText(getContext(), "Side effect reported", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.msg_side_effect_reported), Toast.LENGTH_SHORT).show();
             dismiss();
         });
     }

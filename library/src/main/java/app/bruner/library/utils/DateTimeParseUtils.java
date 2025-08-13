@@ -13,7 +13,7 @@ import java.util.Locale;
  */
 public class DateTimeParseUtils {
 
-    // transforms a date time string into a Date object
+    // transform date time string into a Date object
     public static Date parseDateTime(Context context, String dateTimeStr) {
         if (dateTimeStr == null || dateTimeStr.isEmpty()) {
             return null;
@@ -30,7 +30,7 @@ public class DateTimeParseUtils {
         }
     }
 
-    // transforms a date string into a Date object
+    // transform date string into a Date object
     public static Date parseDate(Context context, String dateStr) {
         if (dateStr == null || dateStr.isEmpty()) {
             return null;
@@ -45,7 +45,7 @@ public class DateTimeParseUtils {
         return null;
     }
 
-    // formats a Date object into a date time string
+    // format Date object into a date time string
     public static String formatDateTime(Context context, Date date) {
         if (date == null) {
             return "";

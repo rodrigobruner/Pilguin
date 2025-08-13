@@ -37,6 +37,6 @@ public class MedicineTypeIconMapper {
                 return getIconByPosition(i); // return icon by position
             }
         }
-        return getIconByPosition(-1);
+        return getIconByPosition(-1); // to get default
     }
 }

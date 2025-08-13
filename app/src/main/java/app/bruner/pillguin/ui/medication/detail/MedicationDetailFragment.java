@@ -27,7 +27,7 @@ public class MedicationDetailFragment extends Fragment {
     private Medication medication;
 
     // factory to create a new instance of this fragment
-    // use factory method to pass the medication object as parameter
+    // I use factory method to pass the medication object as parameter
     public static MedicationDetailFragment newInstance(Medication medicationParam) {
         // get parameter
         MedicationDetailFragment fragment = new MedicationDetailFragment();

@@ -11,8 +11,8 @@ import app.bruner.library.models.Medication;
 import app.bruner.watch.ui.MedicationActivity;
 
 /**
- * Receiver to handle medication notifications on the watch
- * TODO: Not work properly yet
+ * Receiver to deal with medication notification action on the watch
+ * TODO: it does not work properly
  */
 public class WatchMedicationReceiver extends BroadcastReceiver {
 
@@ -21,7 +21,7 @@ public class WatchMedicationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "WatchMedicationReceiver triggered");
+        Log.d(TAG, "WatchMedicationReceiver run");
 
         String medicationJson = intent.getStringExtra(EXTRA_MEDICATION);
         if (medicationJson != null) {
@@ -33,7 +33,7 @@ public class WatchMedicationReceiver extends BroadcastReceiver {
             activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             context.startActivity(activityIntent);
-            Log.d(TAG, "Opening MedicationActivity for: " + medication.getName());
+            Log.d(TAG, "open MedicationActivity for: " + medication.getName());
         }
     }
 }

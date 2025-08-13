@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- permissions -->
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="com.google.android.permission.BIND_LISTENER" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- schedule exact alarms -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" /> <!-- schedule exact alarms, runtime -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />  <!-- keep the wake up to deal with alarms -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- enable notifications, runtime -->
+    <uses-permission android:name="com.google.android.permission.BIND_LISTENER" /> <!-- wearable data layer listener -->
 
     <application
         android:allowBackup="true"
@@ -20,7 +20,7 @@
         android:theme="@style/Theme.Pillguin"
         tools:targetApi="31">
 
-        <!-- Wearable app descriptor - ADICIONAR ESTA LINHA -->
+        <!-- Wearable app description to sync -->
         <meta-data
             android:name="com.google.android.wearable.beta.app"
             android:resource="@xml/wearable_app_desc" />
